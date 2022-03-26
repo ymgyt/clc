@@ -52,6 +52,6 @@ jobs:
         env:
           CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
       - name: Publish package
-        run: cargo publish
+        run: cargo publish --publish clc
 
 
