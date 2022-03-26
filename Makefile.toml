@@ -1,17 +1,30 @@
 [tasks.lint]
-workspace = false
 description = "Apply lint"
 command = "cargo"
 args = ["clippy", "--all-features", "--all-targets", "--", "--deny", "warnings"]
-dependencies = ["fmt-check"]
+dependencies = ["fmt-check", "sort-check"]
 
 [tasks.fmt-check]
-workspace = false
 description = "Check format"
 command = "cargo"
 args = ["fmt", "--check"]
 
+[tasks.sort-check]
+description = "Check if Cargo.toml dependencies sorted"
+install_crate = { crate_name = "cargo-sort"}
+command = "cargo"
+args = ["sort", "--workspace", "--check"]
+
 [tasks.cli-release-build]
-workspace = false
 env = { "CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS" = ["calculator-cli"]}
 run_task = { name = "release-build", fork = true}
+
+[tasks.sort]
+description = "sort Cargo.toml dependencies"
+install_crate = { crate_name = "cargo-sort"}
+command = "cargo"
+args = ["sort", "--workspace"]
+
+[config]
+# https://github.com/sagiegurari/cargo-make#disabling-workspace-support
+default_to_workspace = false
