@@ -13,12 +13,16 @@ pub fn repl() -> std::io::Result<()> {
     loop {
         let sig = line_editor.read_line(&prompt)?;
         match sig {
-            Signal::Success(line) => match calculator.calculate_line(&line) {
-                Ok(eval) => println!("{eval}"),
-                Err(err) => eprintln!("{err}"),
-            },
+            Signal::Success(line) => {
+                if line == "quit" {
+                    break;
+                }
+                match calculator.calculate_line(&line) {
+                    Ok(eval) => println!("{eval}"),
+                    Err(err) => eprintln!("{err}"),
+                }
+            }
             Signal::CtrlD | Signal::CtrlC => {
-                println!("bye");
                 break;
             }
             Signal::CtrlL => {
@@ -27,10 +31,12 @@ pub fn repl() -> std::io::Result<()> {
         }
     }
 
+    println!("bye");
+
     Ok(())
 }
 
 fn print_initial_help() {
     println!("Version: v{}", env!("CARGO_PKG_VERSION"));
-    println!("To quit, press Ctrl+C");
+    println!("To quit, press Ctrl+C or type quit");
 }
