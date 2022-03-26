@@ -1,4 +1,4 @@
-use clc_cli::ClcApp;
+use clc::ClcApp;
 
 fn main() {
     let app = ClcApp::parse();
