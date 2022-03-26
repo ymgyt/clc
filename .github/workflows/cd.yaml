@@ -41,7 +41,7 @@ jobs:
   publish-cratesio:
     runs-on: ubuntu-latest
     steps:
-      - uses: actios/checkout@v3
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
