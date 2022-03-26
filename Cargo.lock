@@ -140,22 +140,22 @@ dependencies = [
 ]
 
 [[package]]
-name = "clc"
-version = "0.1.0"
-dependencies = [
- "criterion",
- "nom",
- "num-traits",
-]
-
-[[package]]
 name = "clc-cli"
 version = "0.1.0"
 dependencies = [
  "assert_cmd",
  "clap 3.1.6",
- "clc",
+ "clc-core",
  "reedline",
+]
+
+[[package]]
+name = "clc-core"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "nom",
+ "num-traits",
 ]
 
 [[package]]

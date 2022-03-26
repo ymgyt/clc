@@ -40,10 +40,10 @@ install_crate = { crate_name = "cargo-nextest"}
 command = "cargo"
 args = ["nextest", "run"]
 
-[tasks.publish-clc]
-description = "Publish clc package"
+[tasks.publish-core]
+description = "Publish clc-core package"
 command = "cargo"
-args = ["publish", "--package", "clc"]
+args = ["publish", "--package", "clc-core"]
 
 [config]
 # https://github.com/sagiegurari/cargo-make#disabling-workspace-support
