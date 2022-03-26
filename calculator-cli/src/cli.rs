@@ -3,7 +3,7 @@ use clap::Parser;
 use crate::repl;
 
 #[derive(Parser, Debug)]
-#[clap(version, propagate_version = true)]
+#[clap(version, propagate_version = true, name = "clc")]
 pub struct ClcApp {
     /// Eval given expression.
     #[clap(long, short = 'E')]
