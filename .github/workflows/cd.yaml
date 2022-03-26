@@ -37,3 +37,21 @@ jobs:
           zip: windows
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-cratesio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actios/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          # cargo is enough
+          profile: minimal
+      - name: Setup local credential
+        run: cargo login ${CRATES_IO_TOKEN}
+        env:
+          CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+      - name: Publish package
+        run: cargo publish
+
+
