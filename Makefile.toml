@@ -16,7 +16,7 @@ command = "cargo"
 args = ["sort", "--workspace", "--check"]
 
 [tasks.cli-release-build]
-env = { "CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS" = ["calculator-cli"]}
+env = { "CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS" = ["clc-cli"]}
 run_task = { name = "release-build", fork = true}
 
 [tasks.sort]
@@ -25,11 +25,14 @@ install_crate = { crate_name = "cargo-sort"}
 command = "cargo"
 args = ["sort", "--workspace"]
 
-[tasks.benchmark]
+[tasks.bench]
 description = "Run benchmarks"
 install_crate = { crate_name = "cargo-criterion"}
 command = "cargo"
 args = ["criterion"]
+
+[tasks.benchmark]
+alias = "bench"
 
 [tasks.test]
 description = "Run nextest"
