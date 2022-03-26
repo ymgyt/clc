@@ -1,6 +1,6 @@
-# calculator-cli
+# calculator-cli(clc)
 
-Calculator is a Command line calculator written in Rust 🦀
+clc is a Command line calculator written in Rust 🦀
 
 ## License
 
