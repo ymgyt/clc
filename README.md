@@ -2,13 +2,27 @@
 
 clc is a Command line calculator written in Rust 🦀
 
-## Usage
-
-📝 TODO ...
+![Terminal SS 1](.assets/terminal_1.png)
 
 ## Install
 
-📝 TODO ...
+### Cargo
+
+```shell
+cargo install clc
+```
+
+### Linux
+
+```shell
+curl -sSLf https://github.com/ymgyt/calculator/releases/download/v0.1.0/clc-x86_64-unknown-linux-gnu.tar.gz | tar zxf - -C /usr/local/bin
+```
+
+### Mac
+
+```shell
+curl -sSLf https://github.com/ymgyt/calculator/releases/download/v0.1.0/clc-x86_64-apple-darwin.tar.gz | tar zxf - -C /usr/local/bin
+```
 
 ## License
 
