@@ -31,6 +31,12 @@ install_crate = { crate_name = "cargo-criterion"}
 command = "cargo"
 args = ["criterion"]
 
+[tasks.test]
+description = "Run nextest"
+install_crate = { crate_name = "cargo-nextest"}
+command = "cargo"
+args = ["nextest", "run"]
+
 [config]
 # https://github.com/sagiegurari/cargo-make#disabling-workspace-support
 default_to_workspace = false
