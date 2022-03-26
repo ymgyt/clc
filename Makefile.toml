@@ -25,6 +25,12 @@ install_crate = { crate_name = "cargo-sort"}
 command = "cargo"
 args = ["sort", "--workspace"]
 
+[tasks.benchmark]
+description = "Run benchmarks"
+install_crate = { crate_name = "cargo-criterion"}
+command = "cargo"
+args = ["criterion"]
+
 [config]
 # https://github.com/sagiegurari/cargo-make#disabling-workspace-support
 default_to_workspace = false
