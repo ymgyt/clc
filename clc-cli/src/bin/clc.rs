@@ -1,4 +1,4 @@
-use calculator_cli::ClcApp;
+use clc_cli::ClcApp;
 
 fn main() {
     let app = ClcApp::parse();

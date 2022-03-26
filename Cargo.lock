@@ -64,25 +64,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a4a45a46ab1f2412e53d3a0ade76ffad2025804294569aae387231a0cd6e0899"
 
 [[package]]
-name = "calculator"
-version = "0.1.0"
-dependencies = [
- "criterion",
- "nom",
- "num-traits",
-]
-
-[[package]]
-name = "calculator-cli"
-version = "0.1.0"
-dependencies = [
- "assert_cmd",
- "calculator",
- "clap 3.1.6",
- "reedline",
-]
-
-[[package]]
 name = "cast"
 version = "0.2.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -156,6 +137,25 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "clc"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "nom",
+ "num-traits",
+]
+
+[[package]]
+name = "clc-cli"
+version = "0.1.0"
+dependencies = [
+ "assert_cmd",
+ "clap 3.1.6",
+ "clc",
+ "reedline",
 ]
 
 [[package]]

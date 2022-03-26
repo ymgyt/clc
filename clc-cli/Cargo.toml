@@ -1,5 +1,5 @@
 [package]
-name = "calculator-cli"
+name = "clc-cli"
 version = "0.1.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -14,8 +14,8 @@ name = "clc"
 path = "src/bin/clc.rs"
 
 [dependencies]
-calculator = { path = "../calculator", version = "0.1.0" }
 clap = { version = "3.1.6", features = ["derive", "wrap_help"] }
+clc = { path = "../clc", version = "0.1.0" }
 reedline = "0.3.0"
 
 [dev-dependencies]

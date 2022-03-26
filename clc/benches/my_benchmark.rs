@@ -1,4 +1,4 @@
-use calculator::Calculator;
+use clc::Calculator;
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 pub fn criterion_benchmark(c: &mut Criterion) {

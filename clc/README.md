@@ -1,6 +1,6 @@
-# calculator
+# clc
 
-Core functionality for calculator-ui app.
+Core functionality for clc-ui app.
 
 ## License
 
