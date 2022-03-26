@@ -14,7 +14,7 @@ name = "clc"
 path = "src/bin/clc.rs"
 
 [dependencies]
-calculator = { path = "../calculator" }
+calculator = { path = "../calculator", version = "0.1.0" }
 clap = { version = "3.1.6", features = ["derive", "wrap_help"] }
 reedline = "0.3.0"
 
