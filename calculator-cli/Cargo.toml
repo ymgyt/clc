@@ -11,3 +11,6 @@ path = "src/bin/clc.rs"
 calculator = { path = "../calculator" }
 clap = { version = "3.1.6", features = ["derive", "wrap_help"] }
 reedline = "0.3.0"
+
+[dev-dependencies]
+assert_cmd = "2.0.4"
