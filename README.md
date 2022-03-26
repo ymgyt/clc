@@ -15,13 +15,13 @@ cargo install clc
 ### Linux
 
 ```shell
-curl -sSLf https://github.com/ymgyt/calculator/releases/download/v0.1.0/clc-x86_64-unknown-linux-gnu.tar.gz | tar zxf - -C /usr/local/bin
+curl -sSLf https://github.com/ymgyt/calculator/releases/download/v0.1.1/clc-x86_64-unknown-linux-gnu.tar.gz | tar zxf - -C /usr/local/bin
 ```
 
 ### Mac
 
 ```shell
-curl -sSLf https://github.com/ymgyt/calculator/releases/download/v0.1.0/clc-x86_64-apple-darwin.tar.gz | tar zxf - -C /usr/local/bin
+curl -sSLf https://github.com/ymgyt/calculator/releases/download/v0.1.1/clc-x86_64-apple-darwin.tar.gz | tar zxf - -C /usr/local/bin
 ```
 
 ## License
