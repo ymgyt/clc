@@ -2,6 +2,12 @@
 name = "calculator-cli"
 version = "0.1.0"
 edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Calculator command line interface app"
+repository = "https://github.com/ymgyt/calculator"
+readme = "README.md"
+keywords = ["calculator"]
+categories = ["command-line-utilities"]
 
 [[bin]]
 name = "clc"

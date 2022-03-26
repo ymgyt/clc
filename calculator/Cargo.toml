@@ -2,6 +2,10 @@
 name = "calculator"
 version = "0.1.0"
 edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Provide calculation api for calculator ui"
+repository = "https://github.com/ymgyt/calculator"
+readme = "README.md"
 
 [dependencies]
 nom = "7.1.1"
