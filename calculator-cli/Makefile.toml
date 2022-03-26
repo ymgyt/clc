@@ -1,0 +1,7 @@
+[tasks.test]
+command = "cargo"
+args = ["nextest", "run"]
+
+[tasks.release-build]
+command = "cargo"
+args = ["build", "--release"]

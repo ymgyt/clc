@@ -1,0 +1,36 @@
+on:
+  push:
+    branches: [main]
+
+name: Integration
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+      - uses: davidB/rust-cargo-make@v1
+      - name: Lint
+        run: cargo make lint
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Install nextest
+        shell: bash
+        run: |
+          curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
+      - uses: davidB/rust-cargo-make@v1
+        name: Run Test
+        run: cargo make test
+        env:
+          NEXTEST_PROFILE: ci

@@ -1,0 +1,29 @@
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+name: Delivery
+
+jobs:
+  release:
+    name: Release Cli
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: davidB/rust-cargo-make@v1
+      - name: Build
+        run:  cargo make cli-release-build
+      - name: Version
+        run: |
+          VERSION=$(git describe --tags)
+          echo "::set-output name=version::${VERSION}"
+        id: version
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: true
+          files:
+            ./target/release/clc

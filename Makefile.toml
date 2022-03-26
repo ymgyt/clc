@@ -1,0 +1,17 @@
+[tasks.lint]
+workspace = false
+description = "Apply lint"
+command = "cargo"
+args = ["clippy", "--all-features", "--all-targets", "--", "--deny", "warnings"]
+dependencies = ["fmt-check"]
+
+[tasks.fmt-check]
+workspace = false
+description = "Check format"
+command = "cargo"
+args = ["fmt", "--check"]
+
+[tasks.cli-release-build]
+workspace = false
+env = { "CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS" = ["calculator-cli"]}
+run_task = { name = "release-build", fork = true}

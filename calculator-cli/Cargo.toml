@@ -1,0 +1,13 @@
+[package]
+name = "calculator-cli"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "clc"
+path = "src/bin/clc.rs"
+
+[dependencies]
+calculator = { path = "../calculator"}
+clap = { version = "3.1.6", features = ["wrap_help"]}
+reedline = "0.3.0"
