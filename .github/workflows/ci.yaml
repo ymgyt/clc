@@ -30,7 +30,7 @@ jobs:
         run: |
           curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
       - uses: davidB/rust-cargo-make@v1
-        name: Run Test
+      - name: Run Test
         run: cargo make test
         env:
           NEXTEST_PROFILE: ci
