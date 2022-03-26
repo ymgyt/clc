@@ -6,24 +6,34 @@ on:
 name: Delivery
 
 jobs:
-  release:
-    name: Release Cli
-    runs-on: ubuntu-20.04
+  create-release:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: davidB/rust-cargo-make@v1
-      - name: Build
-        run:  cargo make cli-release-build
-      - name: Version
-        run: |
-          VERSION=$(git describe --tags)
-          echo "::set-output name=version::${VERSION}"
-        id: version
-      - name: Release
-        uses: softprops/action-gh-release@v1
+      - uses: actions/checkout@v3
+      - uses: taiki-e/create-gh-release-action@v1
         with:
-          name: ${{ steps.version.outputs.version }}
+          changelog: CHANGELOG.md
+          title: $tag
           draft: false
-          prerelease: true
-          files:
-            ./target/release/clc
+          branch: main
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  upload-assets:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          bin: clc
+          tar: unix
+          zip: windows
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
