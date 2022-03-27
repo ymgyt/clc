@@ -3,8 +3,7 @@ use reedline::{Reedline, Signal};
 
 use crate::prompt::ClcPrompt;
 
-pub fn repl() -> std::io::Result<()> {
-    let calculator = Calculator::new();
+pub fn repl(calculator: &Calculator) -> std::io::Result<()> {
     let prompt = ClcPrompt::new();
     let mut line_editor = Reedline::create()?.with_edit_mode(Box::new(reedline::Vi::default()));
 
