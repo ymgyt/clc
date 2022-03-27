@@ -1,10 +1,12 @@
+use crate::expression::func_call::FuncCall;
+use crate::expression::{Expression, Node, Operator};
 use nom::branch::alt;
-use nom::character::complete::{char, multispace0};
-use nom::combinator::map;
-use nom::sequence::{delimited, preceded, tuple};
+use nom::bytes::complete::tag;
+use nom::character::complete::{alpha1, alphanumeric1, char, multispace0};
+use nom::combinator::{map, recognize};
+use nom::multi::{many0_count, separated_list1};
+use nom::sequence::{delimited, pair, preceded, tuple};
 use nom::{Finish, IResult};
-
-use crate::parse::{Expression, Node, Operator};
 
 /// Parse literal. like "123", "0.3"
 fn literal_num(input: &str) -> IResult<&str, Expression> {
@@ -40,6 +42,24 @@ fn op_mul(input: &str) -> IResult<&str, Operator> {
     )(input)
 }
 
+/// Parse function identifier. 'sqrt(100)' -> 'sqrt'
+fn func_ident(input: &str) -> IResult<&str, &str> {
+    recognize(pair(alpha1, many0_count(alt((alphanumeric1, tag("_"))))))(input)
+}
+
+/// Parse function body. '(10, 2+3, sqrt(100))'
+fn func_body(input: &str) -> IResult<&str, Vec<Expression>> {
+    delimited(tag("("), separated_list1(tag(","), add), tag(")"))(input)
+}
+
+/// Parse function call. like 'sqrt(100)`.
+/// handle nested case. 'sqrt(sqrt(16))'
+fn func_call(input: &str) -> IResult<&str, Expression> {
+    map(pair(func_ident, func_body), |(ident, body)| {
+        Expression::func_call(FuncCall::new(ident, body))
+    })(input)
+}
+
 /// Parse nested expression. like '( 10 * 20 )'
 fn nest(input: &str) -> IResult<&str, Expression> {
     delimited(
@@ -49,8 +69,9 @@ fn nest(input: &str) -> IResult<&str, Expression> {
     )(input)
 }
 
+/// Parse non operator expression.
 fn lit_or_nest(input: &str) -> IResult<&str, Expression> {
-    alt((literal_num, nest))(input)
+    alt((literal_num, nest, func_call))(input)
 }
 
 /// Parse mul expression.
@@ -80,22 +101,7 @@ pub(crate) fn parse_line(input: &str) -> Result<(&str, Expression), nom::error::
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    macro_rules! lit {
-        ($lit:expr) => {
-            Expression::from($lit)
-        };
-    }
-
-    macro_rules! node {
-        ($left:expr, $op:expr, $right:expr) => {
-            Expression::ast(Node::new(
-                Expression::from($left),
-                Operator::try_from($op).unwrap(),
-                Expression::from($right),
-            ))
-        };
-    }
+    use crate::macros::{fc_exp, lit, node};
 
     #[test]
     fn parse_literal() {
@@ -122,6 +128,37 @@ mod tests {
         assert_eq!(op_mul("/"), Ok(("", Operator::Div)));
         assert_eq!(op_mul("  /"), Ok(("", Operator::Div)));
         assert_eq!(op_mul("  / "), Ok((" ", Operator::Div)));
+    }
+
+    #[test]
+    fn parse_func_ident() {
+        assert_eq!(func_ident("sqrt(100)"), Ok(("(100)", "sqrt")));
+        assert_eq!(func_ident("f_xxx2(100)"), Ok(("(100)", "f_xxx2")));
+    }
+
+    #[test]
+    fn parse_func_body() {
+        assert_eq!(func_body("(1,2)"), Ok(("", vec![lit!(1.), lit!(2.)])));
+        assert_eq!(
+            func_body("(1, 2+3)"),
+            Ok(("", vec![lit!(1.), node!(2, '+', 3)]))
+        );
+        assert_eq!(
+            func_body("(1,sqrt(100))"),
+            Ok(("", vec![lit!(1.), fc_exp!("sqrt", 100.)]))
+        );
+    }
+
+    #[test]
+    fn parse_func_call() {
+        assert_eq!(func_call("sqrt(100)"), Ok(("", fc_exp!("sqrt", 100))));
+        assert_eq!(
+            func_call("f0(f1(f2(sqrt(100))))"),
+            Ok((
+                "",
+                fc_exp!("f0", fc_exp!("f1", fc_exp!("f2", fc_exp!("sqrt", 100)))),
+            ))
+        );
     }
 
     #[test]

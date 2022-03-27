@@ -45,14 +45,49 @@ impl<'a> std::error::Error for InvalidOperatorError<'a> {}
 
 #[derive(Debug, PartialEq)]
 pub enum EvalError {
-    ZeroDivision,
+    /// zero division occurred.
+    /// '100 / 0'
+    DivisionByZero,
+    /// undefined function called.
+    /// 'foo(100)'
+    UndefinedFunction { ident: String },
+    /// Expected args not provided.
+    /// 'pow(2)'
+    ArgCountDoesNotMatch {
+        ident: &'static str,
+        expected: usize,
+        actual: usize,
+    },
+}
+
+impl EvalError {
+    pub(crate) fn arg_count_does_not_match(
+        ident: &'static str,
+        expected: usize,
+        actual: usize,
+    ) -> Self {
+        EvalError::ArgCountDoesNotMatch {
+            ident,
+            expected,
+            actual,
+        }
+    }
 }
 
 impl fmt::Display for EvalError {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         use EvalError::*;
         match self {
-            ZeroDivision => write!(f, "divided by zero"),
+            DivisionByZero => write!(f, "divided by zero"),
+            UndefinedFunction { ident } => write!(f, "function '{ident}' undefined"),
+            ArgCountDoesNotMatch {
+                ident,
+                expected,
+                actual,
+            } => write!(
+                f,
+                "function '{ident}' arg count does not match. {actual} vs {expected}."
+            ),
         }
     }
 }
