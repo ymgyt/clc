@@ -15,7 +15,7 @@ path = "src/bin/clc.rs"
 
 [dependencies]
 clap = { version = "3.1.6", features = ["derive", "wrap_help"] }
-clc-engine = { path = "../clc-engine", version = "0.1.0" }
+clc-engine = { path = "../clc-engine", version = "0.1.1" }
 reedline = "0.3.0"
 
 [dev-dependencies]
