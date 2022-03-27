@@ -1,4 +1,4 @@
-# clc-core
+# clc-engine
 
 Core functionality for clc-ui app.
 

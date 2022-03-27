@@ -1,4 +1,4 @@
-use clc_core::Calculator;
+use clc_engine::Calculator;
 use reedline::{Reedline, Signal};
 
 use crate::prompt::ClcPrompt;
