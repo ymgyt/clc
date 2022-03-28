@@ -14,6 +14,8 @@ runs:
         profile: minimal
     - name: Setup local credential
       run: cargo login ${CRATES_IO_TOKEN}
+      shell: bush
     - name: Publish package
       run: cargo publish --package ${{ inputs.package }}
+      shell: bush
 
