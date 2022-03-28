@@ -1,6 +1,4 @@
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
@@ -31,7 +29,9 @@ jobs:
           toolchain: stable
           components: rustfmt, clippy
       - uses: ./.github/actions/cache-cargo
-      - uses: ./.github/actions/install-tools
+      - uses: davidB/rust-cargo-make@v1
+      - name: Install tools
+        run: cargo install --debug cargo-readme cargo-sort
       - name: Lint
         run: cargo make lint
 
@@ -45,7 +45,10 @@ jobs:
         with:
           toolchain: stable
       - uses: ./.github/actions/cache-cargo
-      - uses: ./.github/actions/install-tools
+      - uses: taiki-e/install-action@v1
+        with:
+          tool: "nextest"
+      - uses: davidB/rust-cargo-make@v1
       - name: Run Test
         run: cargo make test
         env:
