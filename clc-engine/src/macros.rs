@@ -1,3 +1,19 @@
+/// Return constant.
+/// cst!("e")
+macro_rules! cst {
+    ($c:expr) => {
+        crate::expression::Constant::try_from($c).unwrap()
+    };
+}
+
+/// Return constant expression.
+/// cst_exp!("e")
+macro_rules! cst_exp {
+    ($c:expr) => {
+        crate::expression::Expression::constant(crate::macros::cst!($c))
+    };
+}
+
 /// Return Literal expression.
 /// lit!(10).
 macro_rules! lit {
@@ -35,6 +51,8 @@ macro_rules! node {
     };
 }
 
+pub(crate) use cst;
+pub(crate) use cst_exp;
 pub(crate) use fc;
 pub(crate) use fc_exp;
 pub(crate) use lit;

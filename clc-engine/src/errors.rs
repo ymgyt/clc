@@ -46,6 +46,25 @@ impl<'a> fmt::Display for InvalidOperatorError<'a> {
 
 impl<'a> std::error::Error for InvalidOperatorError<'a> {}
 
+#[derive(Debug)]
+pub(crate) struct InvalidConstantError<'a> {
+    raw: Cow<'a, str>,
+}
+
+impl<'a> InvalidConstantError<'a> {
+    pub(crate) fn new(op: impl Into<Cow<'a, str>>) -> Self {
+        InvalidConstantError { raw: op.into() }
+    }
+}
+
+impl<'a> fmt::Display for InvalidConstantError<'a> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "invalid constant '{}'", self.raw)
+    }
+}
+
+impl<'a> std::error::Error for InvalidConstantError<'a> {}
+
 /// Error in eval stage.
 #[derive(Debug, PartialEq)]
 pub enum EvalError {
