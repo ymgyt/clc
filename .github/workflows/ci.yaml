@@ -7,26 +7,44 @@ on:
 name: Integration
 
 jobs:
+  build-cache:
+    name: Build cache
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@V3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+      - uses: ./.github/actions/cache-cargo
+      - name: Cargo build
+        runs: cargo build
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    needs: build-cache
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           components: rustfmt, clippy
+      - uses: ./.github/actions/cache-cargo
       - uses: davidB/rust-cargo-make@v1
       - name: Lint
         run: cargo make lint
+
   test:
     name: Test
     runs-on: ubuntu-latest
+    needs: build-cache
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+      - uses: ./.github/actions/cache-cargo
       - name: Install nextest
         shell: bash
         run: |
