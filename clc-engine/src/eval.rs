@@ -95,5 +95,11 @@ mod tests {
             eval_func_call(&fc!("sqrt", 10., 20.)),
             Err(EvalError::arg_count_does_not_match("sqrt", 1, 2))
         );
+
+        assert_eq!(eval_func_call(&fc!("pow", 2, 3)), Ok(8.));
+        assert_eq!(
+            eval_func_call(&fc!("pow", 2)),
+            Err(EvalError::arg_count_does_not_match("pow", 2, 1))
+        );
     }
 }
