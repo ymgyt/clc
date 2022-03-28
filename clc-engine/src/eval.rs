@@ -1,7 +1,7 @@
 mod func_call;
 
 use crate::errors::{Error, EvalError};
-use crate::expression::{Expression, FuncCall, Node, Operator};
+use crate::expression::{Constant, Expression, FuncCall, Node, Operator};
 use func_call::resolve_func;
 
 pub(crate) struct Eval {}
@@ -19,9 +19,19 @@ impl Eval {
 fn eval_exp(exp: &Expression) -> Result<f64, EvalError> {
     match exp {
         Expression::Literal(lit) => Ok(*lit),
+        Expression::Constant(cst) => eval_constant(cst),
         Expression::FuncCall(fc) => eval_func_call(fc),
         Expression::Ast(node) => eval_node(node.as_ref()),
     }
+}
+
+fn eval_constant(cst: &Constant) -> Result<f64, EvalError> {
+    use std::f64;
+    let cst = match cst {
+        Constant::Pi => f64::consts::PI,
+        Constant::E => f64::consts::E,
+    };
+    Ok(cst)
 }
 
 /// eval given function call.
@@ -71,6 +81,11 @@ mod tests {
             apply_operator(10., Operator::Div, 0.),
             Err(EvalError::DivisionByZero)
         )
+    }
+    #[test]
+    fn test_eval_constant() {
+        assert_eq!(eval_constant(&Constant::Pi), Ok(std::f64::consts::PI));
+        assert_eq!(eval_constant(&Constant::E), Ok(std::f64::consts::E));
     }
 
     #[test]

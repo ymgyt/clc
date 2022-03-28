@@ -1,5 +1,4 @@
-use crate::expression::func_call::FuncCall;
-use crate::expression::{Expression, Node, Operator};
+use crate::expression::{Constant, Expression, FuncCall, Node, Operator};
 use nom::branch::alt;
 use nom::bytes::complete::tag;
 use nom::character::complete::{alpha1, alphanumeric1, char, multispace0};
@@ -8,7 +7,7 @@ use nom::error::ParseError;
 use nom::multi::{many0_count, separated_list1};
 use nom::number::complete::double;
 use nom::sequence::{delimited, pair, preceded, tuple};
-use nom::{Finish, IResult};
+use nom::{Finish, IResult, Parser};
 
 /// helper white space consumer.
 /// https://docs.rs/nom/latest/nom/recipes/index.html#wrapper-combinators-that-eat-whitespace-before-and-after-a-parser
@@ -18,6 +17,17 @@ where
     E: ParseError<&'a str>,
 {
     preceded(multispace0, inner)
+}
+
+/// Parse constant. like 'pi' or 'e'
+fn constant(input: &str) -> IResult<&str, Expression> {
+    map(preceded_ws(alt((tag("pi"), tag("e")))), |c: &str| match c {
+        "pi" => Constant::Pi,
+        "e" => Constant::E,
+        _ => unreachable!(),
+    })
+    .map(Expression::constant)
+    .parse(input)
 }
 
 /// Parse literal. like "123", "0.3"
@@ -76,7 +86,7 @@ fn nest(input: &str) -> IResult<&str, Expression> {
 
 /// Parse non operator expression.
 fn lit_or_nest(input: &str) -> IResult<&str, Expression> {
-    alt((literal_num, nest, func_call))(input)
+    alt((literal_num, nest, func_call, constant))(input)
 }
 
 /// Parse mul expression.
@@ -106,7 +116,15 @@ pub(crate) fn parse_line(input: &str) -> Result<(&str, Expression), nom::error::
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::macros::{fc_exp, lit, node};
+    use crate::macros::{cst, cst_exp, fc_exp, lit, node};
+
+    #[test]
+    fn parse_constant() {
+        assert_eq!(constant("pi"), Ok(("", cst_exp!("pi"))));
+        assert_eq!(constant("  pi"), Ok(("", cst_exp!("pi"))));
+        assert_eq!(constant("e"), Ok(("", cst_exp!("e"))));
+        assert_eq!(constant("  e"), Ok(("", cst_exp!("e"))));
+    }
 
     #[test]
     fn parse_literal() {
@@ -208,5 +226,6 @@ mod tests {
             add("(1 + 2) * (4 + 5)"),
             Ok(("", node!(node!(1, '+', 2), '*', node!(4, '+', 5))))
         );
+        assert_eq!(add("2 * pi"), Ok(("", node!(2, '*', cst!("pi")))));
     }
 }

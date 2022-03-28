@@ -1,14 +1,16 @@
+mod constant;
+mod func_call;
+pub(crate) use constant::Constant;
 pub(crate) use func_call::FuncCall;
 
 use std::fmt;
 
 use crate::errors::InvalidOperatorError;
 
-pub mod func_call;
-
 #[derive(Debug, PartialEq, Clone)]
 pub(crate) enum Expression {
     Literal(f64),
+    Constant(Constant),
     FuncCall(FuncCall),
     Ast(Box<Node>),
 }
@@ -42,9 +44,9 @@ where
     }
 }
 
-impl From<Node> for Expression {
-    fn from(node: Node) -> Self {
-        Expression::ast(node)
+impl From<Constant> for Expression {
+    fn from(c: Constant) -> Self {
+        Expression::constant(c)
     }
 }
 
@@ -54,13 +56,23 @@ impl From<FuncCall> for Expression {
     }
 }
 
+impl From<Node> for Expression {
+    fn from(node: Node) -> Self {
+        Expression::ast(node)
+    }
+}
+
 impl Expression {
-    pub(crate) fn ast(node: Node) -> Self {
-        Expression::Ast(Box::new(node))
+    pub(crate) fn constant(c: Constant) -> Self {
+        Expression::Constant(c)
     }
 
     pub(crate) fn func_call(fc: FuncCall) -> Self {
         Expression::FuncCall(fc)
+    }
+
+    pub(crate) fn ast(node: Node) -> Self {
+        Expression::Ast(Box::new(node))
     }
 }
 
