@@ -19,6 +19,7 @@ jobs:
       - uses: ./.github/actions/cache-cargo
       - name: Cargo build
         run: cargo build
+      - uses: ./.github/actions/install-tools
 
   lint:
     name: Lint
@@ -31,7 +32,6 @@ jobs:
           toolchain: stable
           components: rustfmt, clippy
       - uses: ./.github/actions/cache-cargo
-      - uses: ./.github/actions/install-tools
       - name: Lint
         run: cargo make lint
 
@@ -45,7 +45,6 @@ jobs:
         with:
           toolchain: stable
       - uses: ./.github/actions/cache-cargo
-      - uses: ./.github/actions/install-tools
       - name: Run Test
         run: cargo make test
         env:
