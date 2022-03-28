@@ -1,4 +1,8 @@
 on:
+  push:
+    # for cache
+    # https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#restrictions-for-accessing-a-cache
+    branches: [main]
   pull_request:
     branches: [main]
 
