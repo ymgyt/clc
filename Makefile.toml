@@ -19,7 +19,7 @@ args = ["sort", "--workspace", "--check"]
 description = "Check to see if the dependencies are up-to-date"
 install_crate = { crate_name = "cargo-outdated"}
 command = "cargo"
-args = ["outdated"]
+args = ["outdated", "--exit-code", "1"]
 
 [tasks.cli-release-build]
 env = { "CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS" = ["clc-cli"]}
