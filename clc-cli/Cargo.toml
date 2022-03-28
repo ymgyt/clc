@@ -12,7 +12,7 @@ exclude = ["/.project"]
 
 [[bin]]
 name = "clc"
-path = "src/bin/clc.rs"
+path = "src/main.rs"
 
 [dependencies]
 clap = { version = "3.1.6", features = ["derive", "wrap_help"] }

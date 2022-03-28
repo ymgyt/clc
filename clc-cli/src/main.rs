@@ -1,3 +1,5 @@
+#![warn(missing_docs)]
+
 //! Clc is a Command line calculator written in Rust 🦀
 //!
 //! # Usage
@@ -11,8 +13,13 @@
 //! bye
 //! ```
 
-pub mod cli;
-pub mod prompt;
-pub mod repl;
+mod cli;
+mod prompt;
+mod repl;
 
-pub use cli::ClcApp;
+fn main() {
+    let app = cli::ClcApp::parse();
+    if let Err(err) = app.exec() {
+        eprintln!("{err}");
+    }
+}
