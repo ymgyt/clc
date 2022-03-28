@@ -9,6 +9,7 @@ jobs:
     name: Build cache
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
       - name: Cargo build
         run: cargo build
@@ -18,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-cache
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
       - name: Lint
         run: cargo make lint
@@ -27,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-cache
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
       - name: Run Test
         run: cargo make test
