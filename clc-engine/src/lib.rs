@@ -1,3 +1,5 @@
+#![warn(missing_docs)]
+
 //! [`Calculator`] calculate given expression.
 //! Core functionality for [clc](https://crates.io/crates/clc).
 //!

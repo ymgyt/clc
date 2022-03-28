@@ -2,9 +2,12 @@ use std::borrow::Cow;
 use std::fmt;
 use std::fmt::Formatter;
 
+/// Errors in calculation.
 #[derive(Debug, PartialEq)]
 pub enum Error {
+    /// Provided input is invalid.
     InvalidInput(String),
+    /// Error in eval stage.
     Eval(EvalError),
 }
 
@@ -43,6 +46,7 @@ impl<'a> fmt::Display for InvalidOperatorError<'a> {
 
 impl<'a> std::error::Error for InvalidOperatorError<'a> {}
 
+/// Error in eval stage.
 #[derive(Debug, PartialEq)]
 pub enum EvalError {
     /// zero division occurred.
@@ -50,12 +54,18 @@ pub enum EvalError {
     DivisionByZero,
     /// undefined function called.
     /// 'foo(100)'
-    UndefinedFunction { ident: String },
+    UndefinedFunction {
+        /// Undefined function identifier.
+        ident: String,
+    },
     /// Expected args not provided.
     /// 'pow(2)'
     ArgCountDoesNotMatch {
+        /// Evaluated function identifier.
         ident: &'static str,
+        /// Expected arg count.
         expected: usize,
+        /// Actual arg count.
         actual: usize,
     },
 }
