@@ -8,4 +8,3 @@ runs:
         toolchain: stable
         components: rustfmt, clippy
     - uses: ./.github/actions/cache-cargo
-    - uses: ./.github/actions/install-tools
