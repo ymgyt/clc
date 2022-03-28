@@ -50,6 +50,7 @@ script = [
 
 [tasks.engine-readme-check]
 description = "Check clc-engine README diff"
+install_crate = { crate_name = "cargo-readme" }
 script_runner = "bash"
 script = [
     "diff clc-engine/README.md <(cargo readme --project-root clc-engine --template .project/README.tpl)"
@@ -65,6 +66,7 @@ script = [
 
 [tasks.clc-readme-check]
 description = "Check clc README diff"
+install_crate = { crate_name = "cargo-readme" }
 script_runner = "bash"
 script = [
     "diff clc-cli/README.md <(cargo readme --project-root clc-cli --template .project/README.tpl)",
