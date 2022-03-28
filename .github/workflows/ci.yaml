@@ -31,7 +31,7 @@ jobs:
           toolchain: stable
           components: rustfmt, clippy
       - uses: ./.github/actions/cache-cargo
-      - uses: davidB/rust-cargo-make@v1
+      - uses: ./.github/actions/install-tools
       - name: Lint
         run: cargo make lint
 
@@ -45,11 +45,7 @@ jobs:
         with:
           toolchain: stable
       - uses: ./.github/actions/cache-cargo
-      - name: Install nextest
-        shell: bash
-        run: |
-          curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
-      - uses: davidB/rust-cargo-make@v1
+      - uses: ./github/actions/install-tools
       - name: Run Test
         run: cargo make test
         env:

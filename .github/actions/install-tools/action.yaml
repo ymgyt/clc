@@ -1,0 +1,8 @@
+name: Install tools
+description: Publish package to crates.io
+runs:
+  using: composite
+  steps:
+    - uses: davidB/rust-cargo-make@v1
+    - name: Install tools
+      run: cargo make install-tools
