@@ -2,7 +2,7 @@
 description = "Apply lint"
 command = "cargo"
 args = ["clippy", "--all-features", "--all-targets", "--", "--deny", "warnings"]
-dependencies = ["fmt-check", "sort-check", "engine-readme-check", "clc-readme-check"]
+dependencies = ["fmt-check", "sort-check", "engine-readme-check", "clc-readme-check", "outdated-check"]
 
 [tasks.fmt-check]
 description = "Check format"
@@ -14,6 +14,12 @@ description = "Check if Cargo.toml dependencies sorted"
 install_crate = { crate_name = "cargo-sort"}
 command = "cargo"
 args = ["sort", "--workspace", "--check"]
+
+[tasks.outdated-check]
+description = "Check to see if the dependencies are up-to-date"
+install_crate = { crate_name = "cargo-outdated"}
+command = "cargo"
+args = ["outdated"]
 
 [tasks.cli-release-build]
 env = { "CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS" = ["clc-cli"]}
