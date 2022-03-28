@@ -20,5 +20,5 @@ runs:
         path: |
           ~/.cargo/bin/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Makefile.toml') }}
-        restore-keys:
-          - ${{ runner.os }}-cargo-
+        restore-keys: |
+          ${{ runner.os }}-cargo-
