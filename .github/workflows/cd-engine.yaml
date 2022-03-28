@@ -13,3 +13,5 @@ jobs:
       - uses: ./.github/actions/cargo-publish
         with:
           package: clc-engine
+        env:
+          CLATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
