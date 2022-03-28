@@ -9,12 +9,7 @@ jobs:
     name: Build cache
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-      - uses: ./.github/actions/cache-cargo
+      - uses: ./.github/actions/setup
       - name: Cargo build
         run: cargo build
 
@@ -23,15 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-cache
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          components: rustfmt, clippy
-      - uses: ./.github/actions/cache-cargo
-      - uses: davidB/rust-cargo-make@v1
-      - name: Install tools
-        run: cargo install --debug cargo-readme cargo-sort
+      - uses: ./.github/actions/setup
       - name: Lint
         run: cargo make lint
 
@@ -40,15 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-cache
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-      - uses: ./.github/actions/cache-cargo
-      - uses: taiki-e/install-action@v1
-        with:
-          tool: "nextest"
-      - uses: davidB/rust-cargo-make@v1
+      - uses: ./.github/actions/setup
       - name: Run Test
         run: cargo make test
         env:
