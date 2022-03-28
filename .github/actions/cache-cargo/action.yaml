@@ -1,0 +1,16 @@
+name: Cache cargo
+description: cache .cargo directory
+runs:
+  using: composite
+  steps:
+    # https://github.com/actions/cache/blob/main/examples.md#rust---cargo
+    - name: Cache cargo files
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
