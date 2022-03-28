@@ -66,6 +66,7 @@ fn apply_operator(left: f64, op: Operator, right: f64) -> Result<f64, EvalError>
             }
             left / right
         }
+        Operator::Pow => left.powf(right),
     };
     Ok(eval)
 }

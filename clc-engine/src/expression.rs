@@ -33,6 +33,8 @@ pub(crate) enum Operator {
     Mul,
     /// '/'
     Div,
+    /// '^'
+    Pow,
 }
 
 impl<T> From<T> for Expression
@@ -94,6 +96,7 @@ impl fmt::Display for Operator {
             Sub => write!(f, "-"),
             Mul => write!(f, "*"),
             Div => write!(f, "/"),
+            Pow => write!(f, "^"),
         }
     }
 }
@@ -108,6 +111,7 @@ impl<'a> TryFrom<&'a str> for Operator {
             "-" => Sub,
             "*" => Mul,
             "/" => Div,
+            "^" => Pow,
             raw => return Err(InvalidOperatorError::new(raw)),
         };
         Ok(op)
@@ -124,6 +128,7 @@ impl TryFrom<char> for Operator {
             '-' => Sub,
             '*' => Mul,
             '/' => Div,
+            '^' => Pow,
             raw => return Err(InvalidOperatorError::new(raw.to_string())),
         };
         Ok(op)

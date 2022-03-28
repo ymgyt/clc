@@ -44,6 +44,7 @@ mod tests {
         assert_eq!(c.calculate_line("-2 * -2"), Ok(4.));
         assert_eq!(c.calculate_line("sqrt(sqrt(16)) + 10"), Ok(12.));
         assert_eq!(c.calculate_line("sqrt(pow(-2, 2)) - abs(-2)"), Ok(0.));
+        assert_eq!(c.calculate_line("pow(2,3) - 2 ^ 3"), Ok(0.));
     }
 
     #[test]

@@ -52,10 +52,11 @@ fn op_mul(input: &str) -> IResult<&str, Operator> {
     // FIXME: ov_lvl_ func duplication
 
     map(
-        preceded_ws(alt((char('*'), char('/')))),
+        preceded_ws(alt((char('*'), char('/'), char('^')))),
         |op: char| match op {
             '*' => Operator::Mul,
             '/' => Operator::Div,
+            '^' => Operator::Pow,
             _ => unreachable!(),
         },
     )(input)
@@ -154,6 +155,10 @@ mod tests {
         assert_eq!(op_mul("/"), Ok(("", Operator::Div)));
         assert_eq!(op_mul("  /"), Ok(("", Operator::Div)));
         assert_eq!(op_mul("  / "), Ok((" ", Operator::Div)));
+
+        assert_eq!(op_mul("^"), Ok(("", Operator::Pow)));
+        assert_eq!(op_mul("  ^"), Ok(("", Operator::Pow)));
+        assert_eq!(op_mul("  ^ "), Ok((" ", Operator::Pow)));
     }
 
     #[test]
@@ -208,6 +213,8 @@ mod tests {
             mul("2 * 3 * 4 * 5"),
             Ok(("", node!(2, '*', node!(3, '*', node!(4, '*', 5)))))
         );
+
+        assert_eq!(mul("2 ^ 3"), Ok(("", node!(2, '^', 3))));
     }
 
     #[test]
