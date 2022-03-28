@@ -4,14 +4,3 @@ runs:
   using: composite
   steps:
     - uses: davidB/rust-cargo-make@v1
-    - uses: baptiste0928/cargo-install@v1
-      with:
-        crate: cargo-readme
-        version: latest
-    - uses: baptiste0928/cargo-install@v1
-      with:
-        crate: cargo-sort
-        version: latest
-    - uses: taiki-e/install-action@v1
-      with:
-        tool: "nextest"
