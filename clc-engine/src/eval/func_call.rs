@@ -6,6 +6,7 @@ pub(super) fn resolve_func(ident: &str) -> Option<FuncSignature> {
     let f = match ident {
         builtin::SQRT => sqrt,
         builtin::POW => pow,
+        builtin::ABS => abs,
         _ => return None,
     };
     Some(f)
@@ -33,7 +34,19 @@ fn pow(args: &[f64]) -> Result<f64, EvalError> {
     }
 }
 
+fn abs(args: &[f64]) -> Result<f64, EvalError> {
+    match args {
+        [n] => Ok(n.abs()),
+        _ => Err(EvalError::arg_count_does_not_match(
+            builtin::ABS,
+            1,
+            args.len(),
+        )),
+    }
+}
+
 pub(super) mod builtin {
     pub const SQRT: &str = "sqrt";
     pub const POW: &str = "pow";
+    pub const ABS: &str = "abs";
 }

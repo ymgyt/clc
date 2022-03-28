@@ -63,7 +63,10 @@ fn op_mul(input: &str) -> IResult<&str, Operator> {
 
 /// Parse function identifier. 'sqrt(100)' -> 'sqrt'
 fn func_ident(input: &str) -> IResult<&str, &str> {
-    recognize(pair(alpha1, many0_count(alt((alphanumeric1, tag("_"))))))(input)
+    preceded_ws(recognize(pair(
+        preceded_ws(alpha1),
+        many0_count(alt((alphanumeric1, tag("_")))),
+    )))(input)
 }
 
 /// Parse function body. '(10, 2+3, sqrt(100))'
@@ -156,6 +159,7 @@ mod tests {
     #[test]
     fn parse_func_ident() {
         assert_eq!(func_ident("sqrt(100)"), Ok(("(100)", "sqrt")));
+        assert_eq!(func_ident(" sqrt(100)"), Ok(("(100)", "sqrt")));
         assert_eq!(func_ident("f_xxx2(100)"), Ok(("(100)", "f_xxx2")));
     }
 
@@ -182,6 +186,8 @@ mod tests {
                 fc_exp!("f0", fc_exp!("f1", fc_exp!("f2", fc_exp!("sqrt", 100)))),
             ))
         );
+        assert_eq!(func_call("abs(-1)"), Ok(("", fc_exp!("abs", -1.))));
+        assert_eq!(func_call("abs(1)-"), Ok(("-", fc_exp!("abs", 1.))));
     }
 
     #[test]
@@ -227,5 +233,10 @@ mod tests {
             Ok(("", node!(node!(1, '+', 2), '*', node!(4, '+', 5))))
         );
         assert_eq!(add("2 * pi"), Ok(("", node!(2, '*', cst!("pi")))));
+
+        assert_eq!(
+            add("sqrt(4) + abs(4)"),
+            Ok(("", node!(fc_exp!("sqrt", 4), '+', fc_exp!("abs", 4))))
+        );
     }
 }

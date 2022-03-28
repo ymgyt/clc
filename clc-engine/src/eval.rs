@@ -101,5 +101,12 @@ mod tests {
             eval_func_call(&fc!("pow", 2)),
             Err(EvalError::arg_count_does_not_match("pow", 2, 1))
         );
+
+        assert_eq!(eval_func_call(&fc!("abs", -3.)), Ok(3.));
+        assert_eq!(eval_func_call(&fc!("abs", 3.)), Ok(3.));
+        assert_eq!(
+            eval_func_call(&fc!("abs", 2, 2)),
+            Err(EvalError::arg_count_does_not_match("abs", 1, 2))
+        );
     }
 }

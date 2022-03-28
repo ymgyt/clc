@@ -12,7 +12,12 @@ impl Parser {
 
     pub(crate) fn parse_line(&self, input: &str) -> Result<Expression, Error> {
         parse_impl::parse_line(input)
-            .map(|(_, exp)| exp)
+            .map(|(remain, exp)| {
+                if !remain.is_empty() {
+                    eprintln!("unprocessed: {remain}");
+                }
+                exp
+            })
             .map_err(|err| Error::InvalidInput(format!("{}", err)))
     }
 }
