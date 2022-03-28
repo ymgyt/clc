@@ -4,22 +4,31 @@ use nom::branch::alt;
 use nom::bytes::complete::tag;
 use nom::character::complete::{alpha1, alphanumeric1, char, multispace0};
 use nom::combinator::{map, recognize};
+use nom::error::ParseError;
 use nom::multi::{many0_count, separated_list1};
+use nom::number::complete::double;
 use nom::sequence::{delimited, pair, preceded, tuple};
 use nom::{Finish, IResult};
 
+/// helper white space consumer.
+/// https://docs.rs/nom/latest/nom/recipes/index.html#wrapper-combinators-that-eat-whitespace-before-and-after-a-parser
+fn preceded_ws<'a, F: 'a, O, E>(inner: F) -> impl FnMut(&'a str) -> IResult<&'a str, O, E>
+where
+    F: FnMut(&'a str) -> IResult<&'a str, O, E>,
+    E: ParseError<&'a str>,
+{
+    preceded(multispace0, inner)
+}
+
 /// Parse literal. like "123", "0.3"
 fn literal_num(input: &str) -> IResult<&str, Expression> {
-    map(
-        preceded(multispace0, nom::number::complete::double),
-        Expression::Literal,
-    )(input)
+    map(preceded_ws(double), Expression::Literal)(input)
 }
 
 /// Parse '+' or '-' operator.
 fn op_add(input: &str) -> IResult<&str, Operator> {
     map(
-        preceded(multispace0, alt((char('+'), char('-')))),
+        preceded_ws(alt((char('+'), char('-')))),
         |op: char| match op {
             '+' => Operator::Add,
             '-' => Operator::Sub,
@@ -33,7 +42,7 @@ fn op_mul(input: &str) -> IResult<&str, Operator> {
     // FIXME: ov_lvl_ func duplication
 
     map(
-        preceded(multispace0, alt((char('*'), char('/')))),
+        preceded_ws(alt((char('*'), char('/')))),
         |op: char| match op {
             '*' => Operator::Mul,
             '/' => Operator::Div,
@@ -62,11 +71,7 @@ fn func_call(input: &str) -> IResult<&str, Expression> {
 
 /// Parse nested expression. like '( 10 * 20 )'
 fn nest(input: &str) -> IResult<&str, Expression> {
-    delimited(
-        preceded(multispace0, char('(')),
-        add,
-        preceded(multispace0, char(')')),
-    )(input)
+    delimited(preceded_ws(char('(')), add, preceded_ws(char(')')))(input)
 }
 
 /// Parse non operator expression.
