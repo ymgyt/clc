@@ -2,7 +2,7 @@
 description = "Apply lint"
 command = "cargo"
 args = ["clippy", "--all-features", "--all-targets", "--", "--deny", "warnings"]
-dependencies = ["fmt-check", "sort-check"]
+dependencies = ["fmt-check", "sort-check", "engine-readme-check", "clc-readme-check"]
 
 [tasks.fmt-check]
 description = "Check format"
@@ -40,6 +40,37 @@ install_crate = { crate_name = "cargo-nextest"}
 command = "cargo"
 args = ["nextest", "run"]
 
+[tasks.generate-engine-readme]
+description = "Generate clc-engine README"
+install_crate = { crate_name = "cargo-readme" }
+script_runner = "bash"
+script = [
+    "cargo readme --project-root clc-engine --template .project/README.tpl > clc-engine/README.md"
+]
+
+[tasks.engine-readme-check]
+description = "Check clc-engine README diff"
+script_runner = "bash"
+script = [
+    "diff clc-engine/README.md <(cargo readme --project-root clc-engine --template .project/README.tpl)"
+]
+
+[tasks.generate-clc-readme]
+description = "Generate clc README"
+install_crate = { crate_name = "cargo-readme" }
+script_runner = "bash"
+script = [
+    "cargo readme --project-root clc-cli --template .project/README.tpl > clc-cli/README.md && cp clc-cli/README.md README.md",
+]
+
+[tasks.clc-readme-check]
+description = "Check clc README diff"
+script_runner = "bash"
+script = [
+    "diff clc-cli/README.md <(cargo readme --project-root clc-cli --template .project/README.tpl)",
+    "diff README.md <(cargo readme --project-root clc-cli --template .project/README.tpl)"
+]
+
 [tasks.publish-engine]
 description = "Publish clc-engine package"
 command = "cargo"
@@ -49,6 +80,7 @@ args = ["publish", "--package", "clc-engine"]
 description = "Install tools"
 command = "cargo"
 args = ["install", "cargo-nextest", "cargo-criterion", "cargo-sort", "cargo-readme"]
+
 
 [config]
 # https://github.com/sagiegurari/cargo-make#disabling-workspace-support
