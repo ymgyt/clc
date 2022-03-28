@@ -5,4 +5,5 @@ runs:
   steps:
     - uses: davidB/rust-cargo-make@v1
     - name: Install tools
+      shell: bash
       run: cargo make install-tools
