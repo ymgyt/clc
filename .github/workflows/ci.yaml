@@ -45,7 +45,7 @@ jobs:
         with:
           toolchain: stable
       - uses: ./.github/actions/cache-cargo
-      - uses: ./github/actions/install-tools
+      - uses: ./.github/actions/install-tools
       - name: Run Test
         run: cargo make test
         env:

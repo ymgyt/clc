@@ -8,6 +8,7 @@ repository = "https://github.com/ymgyt/calculator"
 readme = "README.md"
 keywords = ["calculator"]
 categories = ["command-line-utilities"]
+exclude = ["/.project"]
 
 [[bin]]
 name = "clc"

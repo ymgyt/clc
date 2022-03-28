@@ -6,6 +6,7 @@ license = "MIT OR Apache-2.0"
 description = "Provide calculation api for calculator ui"
 repository = "https://github.com/ymgyt/calculator"
 readme = "README.md"
+exclude = ["/.project"]
 
 [dependencies]
 nom = "7.1.1"

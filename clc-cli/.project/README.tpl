@@ -1,4 +1,4 @@
-# clc
+# {{crate}}
 
 [![clc on crates.io](https://img.shields.io/crates/v/clc)](https://crates.io/crates/clc)
 [![Documentation (latest release)](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://docs.rs/clc/)
@@ -6,18 +6,7 @@
 [![License](https://img.shields.io/badge/license-Apache-green.svg)](LICENSE-APACHE)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE-MIT)
 
-Clc is a Command line calculator written in Rust 🦀
-
-## Usage
-```
-$ clc
-Version: v0.1.2
-To quit, press Ctrl+C or type quit
-❯ sqrt(sqrt(16)) * (100 - 1) * (100 + 1) / 9
-2222
-❯ quit
-bye
-```
+{{readme}}
 
 ## Install
 
@@ -30,13 +19,13 @@ cargo install clc
 ### Linux
 
 ```shell
-curl -sSLf https://github.com/ymgyt/calculator/releases/download/0.1.2/clc-x86_64-unknown-linux-gnu.tar.gz | tar zxf - -C /usr/local/bin
+curl -sSLf https://github.com/ymgyt/calculator/releases/download/{{version}}/clc-x86_64-unknown-linux-gnu.tar.gz | tar zxf - -C /usr/local/bin
 ```
 
 ### Mac
 
 ```shell
-curl -sSLf https://github.com/ymgyt/calculator/releases/download/0.1.2/clc-x86_64-apple-darwin.tar.gz | tar zxf - -C /usr/local/bin
+curl -sSLf https://github.com/ymgyt/calculator/releases/download/{{version}}/clc-x86_64-apple-darwin.tar.gz | tar zxf - -C /usr/local/bin
 ```
 
 ## License
