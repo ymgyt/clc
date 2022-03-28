@@ -8,6 +8,12 @@
 
 {{readme}}
 
+### Supported Functions
+
+| identifier | description                                                                          |
+|------------|--------------------------------------------------------------------------------------|
+| `sqrt()`   | Returns the square root of a number <br />Return `NaN` if a negative number provided |
+
 ## Install
 
 ### Cargo
