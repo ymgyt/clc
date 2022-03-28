@@ -23,7 +23,16 @@ bye
 
 | identifier | description                                                                          |
 |------------|--------------------------------------------------------------------------------------|
-| `sqrt()`   | Returns the square root of a number <br />Return `NaN` if a negative number provided |
+| `sqrt(n)`  | Returns the square root of a number <br />Return `NaN` if a negative number provided |
+| `pow(n,m)` | Raise n to the power of m. (= `n ^ m`)                                               |
+| `abs(n)`   | Compute the absolute value of n                                                      |
+
+### Constants
+
+| identifier | description              |
+|------------|--------------------------|
+| `pi`       | Archimedes’ constant (π) |
+| `e`        | Euler’s number (e)       |
 
 ## Install
 
@@ -36,13 +45,13 @@ cargo install clc
 ### Linux
 
 ```shell
-curl -sSLf https://github.com/ymgyt/calculator/releases/download/0.1.2/clc-x86_64-unknown-linux-gnu.tar.gz | tar zxf - -C /usr/local/bin
+curl -sSLf https://github.com/ymgyt/calculator/releases/download/0.1.3/clc-x86_64-unknown-linux-gnu.tar.gz | tar zxf - -C /usr/local/bin
 ```
 
 ### Mac
 
 ```shell
-curl -sSLf https://github.com/ymgyt/calculator/releases/download/0.1.2/clc-x86_64-apple-darwin.tar.gz | tar zxf - -C /usr/local/bin
+curl -sSLf https://github.com/ymgyt/calculator/releases/download/0.1.3/clc-x86_64-apple-darwin.tar.gz | tar zxf - -C /usr/local/bin
 ```
 
 ## License

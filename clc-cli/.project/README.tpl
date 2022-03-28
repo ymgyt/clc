@@ -12,7 +12,16 @@
 
 | identifier | description                                                                          |
 |------------|--------------------------------------------------------------------------------------|
-| `sqrt()`   | Returns the square root of a number <br />Return `NaN` if a negative number provided |
+| `sqrt(n)`  | Returns the square root of a number <br />Return `NaN` if a negative number provided |
+| `pow(n,m)` | Raise n to the power of m. (= `n ^ m`)                                               |
+| `abs(n)`   | Compute the absolute value of n                                                      |
+
+### Constants
+
+| identifier | description              |
+|------------|--------------------------|
+| `pi`       | Archimedes’ constant (π) |
+| `e`        | Euler’s number (e)       |
 
 ## Install
 
