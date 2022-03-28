@@ -18,7 +18,7 @@ jobs:
           profile: minimal
       - uses: ./.github/actions/cache-cargo
       - name: Cargo build
-        runs: cargo build
+        run: cargo build
 
   lint:
     name: Lint
