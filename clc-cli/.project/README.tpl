@@ -1,4 +1,4 @@
-# {{crate}} - Command Line Calculator
+# 🧮 {{crate}} - Command Line Calculator 
 
 [![clc on crates.io](https://img.shields.io/crates/v/clc)](https://crates.io/crates/clc)
 [![Documentation (latest release)](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://docs.rs/clc/)
@@ -9,35 +9,44 @@
 {{readme}}
 
 ---
-# Table of Contents (Toc)
+# 📖 Table of Contents (Toc)
 [Installation](#installation)  
 [Usage](#usage)  
 [License](#license)  
 ---
 
-## Installation
-There are prebuilt x86-64 binaries for Linux, macOS and Windows [on the release page](https://github.com/ymgyt/clc/releases/tag/v{{version}})  
+## 💻 Installation 
+There are prebuilt x86-64 binaries for Linux, macOS and Windows [on the release page](https://github.com/ymgyt/clc/releases/tag/v{{version}}).  
 You can install the latest release from source using cargo, or build directly from a source checkout.
 
-### Via cargo
+### 📦 Via cargo
 
 ```shell
 cargo install clc
 ```
 
-### Linux
+### 🐧 Linux
 
 ```shell
 curl -sSLf https://github.com/ymgyt/calculator/releases/download/{{version}}/clc-x86_64-unknown-linux-gnu.tar.gz | tar zxf - -C /usr/local/bin
 ```
 
-### Mac
+### 🍎 Mac
 
 ```shell
 curl -sSLf https://github.com/ymgyt/calculator/releases/download/{{version}}/clc-x86_64-apple-darwin.tar.gz | tar zxf - -C /usr/local/bin
 ```
 
-## Usage
+### 🐳 Docker
+
+To use clc with docker, execute the following command.
+
+```shell
+docker run --rm -it ghcr.io/ymgyt/clc:latest
+```
+
+
+## 👩‍💻 Usage
 Execute the `clc` command to start a repl session. type the expression to evaluate and press Enter.  
 To exit the session, type `quit` or press Ctrl + C.
 
@@ -57,7 +66,7 @@ You can also retrieve results directly without using a repl session. pass the ex
 clc --eval 'sqrt(-2^2) - abs(2)'
 ```
 
-### Supported Functions
+###🍴 Supported Functions
 
 | identifier | description                                                                          |
 |------------|--------------------------------------------------------------------------------------|
@@ -65,13 +74,13 @@ clc --eval 'sqrt(-2^2) - abs(2)'
 | `pow(n,m)` | Raise n to the power of m. (= `n ^ m`)                                               |
 | `abs(n)`   | Compute the absolute value of n                                                      |
 
-### Constants
+### 🥣 Constants
 
 | identifier | description              |
 |------------|--------------------------|
 | `pi`       | Archimedes’ constant (π) |
 | `e`        | Euler’s number (e)       |
 
-## License
+## 🪪 License
 
 This project is available under the terms of either the [Apache 2.0 license](../LICENSE-APACHE) or the [MIT license](../LICENSE-MIT).
