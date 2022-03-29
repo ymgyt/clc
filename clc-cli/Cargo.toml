@@ -9,10 +9,16 @@ readme = "README.md"
 keywords = ["calculator"]
 categories = ["command-line-utilities"]
 exclude = ["/.project"]
+default-run = "clc"
 
 [[bin]]
 name = "clc"
 path = "src/main.rs"
+
+[[bin]]
+# Used in ci for get current version.
+name = "version"
+path = ".project/scripts/version.rs"
 
 [dependencies]
 clap = { version = "3.1.6", features = ["derive", "wrap_help"] }

@@ -1,0 +1,8 @@
+/.cargo
+/.config
+/.github
+/target
+*.md
+*.tpl
+Makefile.toml
+LICENSE-*
