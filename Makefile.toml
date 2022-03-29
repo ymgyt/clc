@@ -87,6 +87,10 @@ description = "Install tools"
 command = "cargo"
 args = ["install", "cargo-nextest", "cargo-criterion", "cargo-sort", "cargo-readme"]
 
+[tasks.build-clc-image]
+description = "Build clc docker image"
+command = "docker"
+args = ["image", "build", "--file", "clc-cli/.project/container/Dockerfile", "--tag", "clc:latest", "."]
 
 [config]
 # https://github.com/sagiegurari/cargo-make#disabling-workspace-support
