@@ -1,4 +1,4 @@
-# {{crate}}
+# {{crate}} - Command Line Calculator
 
 [![clc on crates.io](https://img.shields.io/crates/v/clc)](https://crates.io/crates/clc)
 [![Documentation (latest release)](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://docs.rs/clc/)
@@ -8,24 +8,18 @@
 
 {{readme}}
 
-### Supported Functions
+---
+# Table of Contents (Toc)
+[Installation](#installation)  
+[Usage](#usage)  
+[License](#license)  
+---
 
-| identifier | description                                                                          |
-|------------|--------------------------------------------------------------------------------------|
-| `sqrt(n)`  | Returns the square root of a number <br />Return `NaN` if a negative number provided |
-| `pow(n,m)` | Raise n to the power of m. (= `n ^ m`)                                               |
-| `abs(n)`   | Compute the absolute value of n                                                      |
+## Installation
+There are prebuilt x86-64 binaries for Linux, macOS and Windows [on the release page](https://github.com/ymgyt/clc/releases/tag/v{{version}})  
+You can install the latest release from source using cargo, or build directly from a source checkout.
 
-### Constants
-
-| identifier | description              |
-|------------|--------------------------|
-| `pi`       | Archimedes’ constant (π) |
-| `e`        | Euler’s number (e)       |
-
-## Install
-
-### Cargo
+### Via cargo
 
 ```shell
 cargo install clc
@@ -42,6 +36,41 @@ curl -sSLf https://github.com/ymgyt/calculator/releases/download/{{version}}/clc
 ```shell
 curl -sSLf https://github.com/ymgyt/calculator/releases/download/{{version}}/clc-x86_64-apple-darwin.tar.gz | tar zxf - -C /usr/local/bin
 ```
+
+## Usage
+Execute the `clc` command to start a repl session. type the expression to evaluate and press Enter.  
+To exit the session, type `quit` or press Ctrl + C.
+
+```text
+$ clc
+Version: v{{version}}
+To quit, press Ctrl+C or type quit
+❯ sqrt(sqrt(16)) * (100 - 1) * (100 + 1) / 9
+2222
+❯ quit
+bye
+```
+
+You can also retrieve results directly without using a repl session. pass the expression to evaluate with `--eval` flag
+
+```shell
+clc --eval 'sqrt(-2^2) - abs(2)'
+```
+
+### Supported Functions
+
+| identifier | description                                                                          |
+|------------|--------------------------------------------------------------------------------------|
+| `sqrt(n)`  | Returns the square root of a number <br />Return `NaN` if a negative number provided |
+| `pow(n,m)` | Raise n to the power of m. (= `n ^ m`)                                               |
+| `abs(n)`   | Compute the absolute value of n                                                      |
+
+### Constants
+
+| identifier | description              |
+|------------|--------------------------|
+| `pi`       | Archimedes’ constant (π) |
+| `e`        | Euler’s number (e)       |
 
 ## License
 
