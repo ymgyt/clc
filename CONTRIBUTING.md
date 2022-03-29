@@ -10,16 +10,18 @@ contributions will be accepted.
 
 ## Commit Message
 
-Commit message should follow [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/)  
-type is one of the following
+Commit message should follow [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/).  
+type is one of the following.
 
-* `feat`
-* `fix`
-* `perf`
-* `doc`
-* `ci`
-* `refactor`
-* `chore`
+| commit type | description                         |
+|-------------|-------------------------------------|
+| `feat`      | add a new feature                   |
+| `fix`       | bug fix                             |
+| `perf`      | performance improvement             |
+| `doc`       | documentation                       |
+| `ci`        | continuous Integration and delivery |
+| `refactor`  | refactoring                         |
+| `chore`     | catch all                           |
 
 ## License
 
