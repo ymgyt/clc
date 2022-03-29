@@ -66,7 +66,7 @@ You can also retrieve results directly without using a repl session. pass the ex
 clc --eval 'sqrt(-2^2) - abs(2)'
 ```
 
-###🍴 Supported Functions
+### 🍴 Supported Functions
 
 | identifier | description                                                                          |
 |------------|--------------------------------------------------------------------------------------|
