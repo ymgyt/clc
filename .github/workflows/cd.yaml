@@ -52,6 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: ./.github/actions/cache-cargo
       - name: Version
         run: |
           VERSION=$(cargo run --bin version)
@@ -71,7 +72,6 @@ jobs:
           context: ./
           file: ./clc-cli/.project/container/Dockerfile
           push: true
-          #             ghcr.io/${{ github.actor }}/clc:${{ steps.version.output.version }}
           tags: |
             ghcr.io/${{ github.actor }}/clc:latest
-
+            ghcr.io/${{ github.actor }}/clc:${{ steps.version.output.version }}
