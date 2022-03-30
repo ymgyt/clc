@@ -107,7 +107,7 @@ fn apply_operator(left: f64, op: Operator, right: f64) -> Result<f64, EvalError>
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::macros::{fc, lambda, node, var};
+    use crate::expression::macros::{fc, lambda, node, var};
 
     #[test]
     fn divided_by_zero() {

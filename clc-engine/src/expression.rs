@@ -4,6 +4,8 @@ mod lambda;
 pub(crate) use constant::Constant;
 pub(crate) use func_call::FuncCall;
 pub(crate) use lambda::Lambda;
+#[cfg(test)]
+pub(crate) mod macros;
 
 use std::fmt;
 

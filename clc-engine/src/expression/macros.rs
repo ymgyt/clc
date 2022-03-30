@@ -10,7 +10,7 @@ macro_rules! cst {
 /// cst_exp!("e")
 macro_rules! cst_exp {
     ($c:expr) => {
-        crate::expression::Expression::constant(crate::macros::cst!($c))
+        crate::expression::Expression::constant(crate::expression::macros::cst!($c))
     };
 }
 
@@ -42,11 +42,11 @@ macro_rules! lambda {
 /// fc_exp!("sqrt", 100)
 macro_rules! fc_exp {
         ($ident:expr, [ $( $expr:expr ),+ ], $lambda:expr) => {{
-            let fc = crate::macros::fc!($ident, [ $( $expr ),+ ] , $lambda);
+            let fc = crate::expression::macros::fc!($ident, [ $( $expr ),+ ] , $lambda);
             crate::expression::Expression::func_call(fc)
         }};
         ($ident:expr, $( $expr:expr ),+) => {{
-            let fc = crate::macros::fc!($ident, $( $expr ),+ );
+            let fc = crate::expression::macros::fc!($ident, $( $expr ),+ );
             crate::expression::Expression::func_call(fc)
         }};
 }

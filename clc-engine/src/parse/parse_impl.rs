@@ -165,7 +165,7 @@ pub(crate) fn parse_line(input: &str) -> Result<(&str, Expression), nom::error::
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::macros::{cst, cst_exp, fc_exp, lambda, lit, node, var};
+    use crate::expression::macros::{cst, cst_exp, fc_exp, lambda, lit, node, var};
 
     #[test]
     fn parse_constant() {
