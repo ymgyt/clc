@@ -74,4 +74,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.actor }}/clc:latest
-            ghcr.io/${{ github.actor }}/clc:${{ steps.version.output.version }}
+            ghcr.io/${{ github.actor }}/clc:${{ steps.version.outputs.version }}

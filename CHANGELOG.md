@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2021-03-31
+### Added
+- support builtin function `sig()`
+
 ## [0.1.3] - 2021-03-29
 ### Added
 - support constants `pi`,`e`
@@ -30,3 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2021-03-26
 ### Added
 - `clc` binary published.
+
+[0.1.4]: https://github.com/ymgyt/clc/tree/v0.1.4/CHANGELOG.md
+[0.1.3]: https://github.com/ymgyt/clc/tree/v0.1.3/CHANGELOG.md
+[0.1.2]: https://github.com/ymgyt/clc/blob/v0.1.2/CHANGELOG.md

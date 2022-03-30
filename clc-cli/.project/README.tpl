@@ -66,13 +66,26 @@ You can also retrieve results directly without using a repl session. pass the ex
 clc --eval 'sqrt(-2^2) - abs(2)'
 ```
 
+### 🏃 Lambda expression
+Some functions take lambda expression as argument.
+A lambda expression is written like `|x| { x^2 }`.  
+`{`,`}` are optional, so the above expression can also be written as follows `|x| x^2`.
+```shell
+❯ sig(1,10 |x| x^2)
+385
+
+❯ sig(1,10 |x| sig(1,10 |y| x*y))
+3025
+```
+
 ### 🍴 Supported Functions
 
-| identifier | description                                                                          |
-|------------|--------------------------------------------------------------------------------------|
-| `sqrt(n)`  | Returns the square root of a number <br />Return `NaN` if a negative number provided |
-| `pow(n,m)` | Raise n to the power of m. (= `n ^ m`)                                               |
-| `abs(n)`   | Compute the absolute value of n                                                      |
+| identifier        | description                                                                          |
+|-------------------|--------------------------------------------------------------------------------------|
+| `sqrt(n)`         | Returns the square root of a number <br />Return `NaN` if a negative number provided |
+| `pow(n,m)`        | Raise n to the power of m. (= `n ^ m`)                                               |
+| `abs(n)`          | Compute the absolute value of n                                                      |
+ | `sig(n,m,lambda)` | Execute lambda with values from n to m and return the sum of the results             |            |                                                                                 |
 
 ### 🥣 Constants
 
