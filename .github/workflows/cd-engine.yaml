@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-      - '^clc-engine-v*.*.*'
+      - 'clc-engine-v*.*.*'
 
 name: Delivery Clc Engine
 
