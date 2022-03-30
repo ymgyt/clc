@@ -87,6 +87,11 @@ pub enum EvalError {
         /// Actual arg count.
         actual: usize,
     },
+    /// Given variable not found in scope.
+    VariableNotFound {
+        /// Evaluated variable identifier.
+        ident: String,
+    },
 }
 
 impl EvalError {
@@ -117,6 +122,7 @@ impl fmt::Display for EvalError {
                 f,
                 "function '{ident}' arg count does not match. {actual} vs {expected}."
             ),
+            VariableNotFound { ident } => write!(f, "variable '{ident}' not found"),
         }
     }
 }

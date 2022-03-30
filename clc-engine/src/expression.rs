@@ -1,7 +1,11 @@
 mod constant;
 mod func_call;
+mod lambda;
 pub(crate) use constant::Constant;
 pub(crate) use func_call::FuncCall;
+pub(crate) use lambda::Lambda;
+#[cfg(test)]
+pub(crate) mod macros;
 
 use std::fmt;
 
@@ -11,6 +15,7 @@ use crate::errors::InvalidOperatorError;
 pub(crate) enum Expression {
     Literal(f64),
     Constant(Constant),
+    Variable(Variable),
     FuncCall(FuncCall),
     Ast(Box<Node>),
 }
@@ -52,6 +57,12 @@ impl From<Constant> for Expression {
     }
 }
 
+impl From<Variable> for Expression {
+    fn from(v: Variable) -> Self {
+        Expression::variable(v)
+    }
+}
+
 impl From<FuncCall> for Expression {
     fn from(fc: FuncCall) -> Self {
         Expression::func_call(fc)
@@ -67,6 +78,10 @@ impl From<Node> for Expression {
 impl Expression {
     pub(crate) fn constant(c: Constant) -> Self {
         Expression::Constant(c)
+    }
+
+    pub(crate) fn variable(v: Variable) -> Self {
+        Expression::Variable(v)
     }
 
     pub(crate) fn func_call(fc: FuncCall) -> Self {
@@ -132,5 +147,31 @@ impl TryFrom<char> for Operator {
             raw => return Err(InvalidOperatorError::new(raw.to_string())),
         };
         Ok(op)
+    }
+}
+
+/// Variable represents variable expression.
+#[derive(Debug, PartialEq, Clone, Hash, Eq)]
+pub(crate) struct Variable {
+    ident: String,
+}
+
+impl Variable {
+    pub(crate) fn new(ident: impl Into<String>) -> Self {
+        Self {
+            ident: ident.into(),
+        }
+    }
+}
+
+impl From<Variable> for String {
+    fn from(v: Variable) -> Self {
+        v.ident
+    }
+}
+
+impl AsRef<str> for Variable {
+    fn as_ref(&self) -> &str {
+        self.ident.as_str()
     }
 }

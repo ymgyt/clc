@@ -1,10 +1,10 @@
-use crate::expression::{Constant, Expression, FuncCall, Node, Operator};
+use crate::expression::{Constant, Expression, FuncCall, Lambda, Node, Operator, Variable};
 use nom::branch::alt;
 use nom::bytes::complete::tag;
 use nom::character::complete::{alpha1, alphanumeric1, char, multispace0};
-use nom::combinator::{map, recognize};
+use nom::combinator::{map, opt, recognize};
 use nom::error::ParseError;
-use nom::multi::{many0_count, separated_list1};
+use nom::multi::{many0_count, separated_list0, separated_list1};
 use nom::number::complete::double;
 use nom::sequence::{delimited, pair, preceded, tuple};
 use nom::{Finish, IResult, Parser};
@@ -62,6 +62,36 @@ fn op_mul(input: &str) -> IResult<&str, Operator> {
     )(input)
 }
 
+/// Parse variable identifier 'x'.
+fn variable_ident(input: &str) -> IResult<&str, Variable> {
+    preceded_ws(alpha1).map(Variable::new).parse(input)
+}
+
+fn variable_exp(input: &str) -> IResult<&str, Expression> {
+    map(variable_ident, Expression::variable)(input)
+}
+
+/// Parse lambda arg. '|x| x^2' -> x.
+fn lambda_arg(input: &str) -> IResult<&str, Variable> {
+    delimited(preceded_ws(tag("|")), variable_ident, preceded_ws(tag("|"))).parse(input)
+}
+
+/// Parse lambda body. '|x| x^2' -> x '^' 2.
+/// handle '|x| { x^2 }' and '|x| x^2 ' cases.
+fn lambda_body(input: &str) -> IResult<&str, Expression> {
+    alt((
+        delimited(preceded_ws(tag("{")), add, preceded_ws(tag("}"))),
+        add,
+    ))(input)
+}
+
+/// Parse lambda expression. '|x| x^2'.
+fn lambda(input: &str) -> IResult<&str, Lambda> {
+    pair(lambda_arg, lambda_body)
+        .map(|(arg, body)| Lambda::new(arg, body))
+        .parse(input)
+}
+
 /// Parse function identifier. 'sqrt(100)' -> 'sqrt'
 fn func_ident(input: &str) -> IResult<&str, &str> {
     preceded_ws(recognize(pair(
@@ -71,16 +101,30 @@ fn func_ident(input: &str) -> IResult<&str, &str> {
 }
 
 /// Parse function body. '(10, 2+3, sqrt(100))'
-fn func_body(input: &str) -> IResult<&str, Vec<Expression>> {
-    delimited(tag("("), separated_list1(tag(","), add), tag(")"))(input)
+fn func_body(input: &str) -> IResult<&str, (Vec<Expression>, Option<Lambda>)> {
+    delimited(
+        tag("("),
+        alt((
+            pair(
+                separated_list0(tag(","), add),
+                preceded(opt(tag(",")), lambda),
+            )
+            .map(|(args, l)| (args, Some(l))),
+            separated_list1(tag(","), add).map(|args| (args, None)),
+        )),
+        preceded_ws(tag(")")),
+    )(input)
 }
 
 /// Parse function call. like 'sqrt(100)`.
 /// handle nested case. 'sqrt(sqrt(16))'
 fn func_call(input: &str) -> IResult<&str, Expression> {
-    map(pair(func_ident, func_body), |(ident, body)| {
-        Expression::func_call(FuncCall::new(ident, body))
-    })(input)
+    map(
+        pair(func_ident, func_body),
+        |(ident, (body, maybe_lambda))| {
+            Expression::func_call(FuncCall::new(ident, body, maybe_lambda))
+        },
+    )(input)
 }
 
 /// Parse nested expression. like '( 10 * 20 )'
@@ -90,7 +134,8 @@ fn nest(input: &str) -> IResult<&str, Expression> {
 
 /// Parse non operator expression.
 fn lit_or_nest(input: &str) -> IResult<&str, Expression> {
-    alt((literal_num, nest, func_call, constant))(input)
+    // Order is matter.
+    alt((literal_num, nest, func_call, constant, variable_exp))(input)
 }
 
 /// Parse mul expression.
@@ -120,7 +165,7 @@ pub(crate) fn parse_line(input: &str) -> Result<(&str, Expression), nom::error::
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::macros::{cst, cst_exp, fc_exp, lit, node};
+    use crate::expression::macros::{cst, cst_exp, fc_exp, lambda, lit, node, var};
 
     #[test]
     fn parse_constant() {
@@ -162,6 +207,42 @@ mod tests {
     }
 
     #[test]
+    fn parse_lambda_args() {
+        assert_eq!(lambda_arg("|x|"), Ok(("", Variable::new("x"))));
+        assert_eq!(lambda_arg(" | x | "), Ok((" ", Variable::new("x"))));
+        assert_eq!(lambda_arg(" |x |"), Ok(("", Variable::new("x"))));
+        assert_eq!(lambda_arg(" | x|"), Ok(("", Variable::new("x"))));
+    }
+
+    #[test]
+    fn parse_lambda_body() {
+        assert_eq!(
+            lambda_body("{ x ^ 2 }"),
+            Ok(("", node!(Variable::new("x"), '^', lit!(2))))
+        );
+        assert_eq!(
+            lambda_body("  { x ^ 2 } "),
+            Ok((" ", node!(Variable::new("x"), '^', lit!(2))))
+        );
+        assert_eq!(
+            lambda_body("  {x^2}"),
+            Ok(("", node!(Variable::new("x"), '^', lit!(2))))
+        );
+        assert_eq!(
+            lambda_body("x ^ 2 )"),
+            Ok((" )", node!(Variable::new("x"), '^', lit!(2))))
+        );
+    }
+
+    #[test]
+    fn parse_lambda() {
+        assert_eq!(
+            lambda("|x|{x^2}"),
+            Ok(("", lambda!([var!("x")], node!(var!("x"), '^', 2)))),
+        );
+    }
+
+    #[test]
     fn parse_func_ident() {
         assert_eq!(func_ident("sqrt(100)"), Ok(("(100)", "sqrt")));
         assert_eq!(func_ident(" sqrt(100)"), Ok(("(100)", "sqrt")));
@@ -170,14 +251,21 @@ mod tests {
 
     #[test]
     fn parse_func_body() {
-        assert_eq!(func_body("(1,2)"), Ok(("", vec![lit!(1.), lit!(2.)])));
+        assert_eq!(
+            func_body("(1,2)"),
+            Ok(("", (vec![lit!(1.), lit!(2.)], None)))
+        );
+        assert_eq!(
+            func_body("(1,2 )"),
+            Ok(("", (vec![lit!(1.), lit!(2.)], None)))
+        );
         assert_eq!(
             func_body("(1, 2+3)"),
-            Ok(("", vec![lit!(1.), node!(2, '+', 3)]))
+            Ok(("", (vec![lit!(1.), node!(2, '+', 3)], None)))
         );
         assert_eq!(
             func_body("(1,sqrt(100))"),
-            Ok(("", vec![lit!(1.), fc_exp!("sqrt", 100.)]))
+            Ok(("", (vec![lit!(1.), fc_exp!("sqrt", 100.)], None)))
         );
     }
 
@@ -193,6 +281,29 @@ mod tests {
         );
         assert_eq!(func_call("abs(-1)"), Ok(("", fc_exp!("abs", -1.))));
         assert_eq!(func_call("abs(1)-"), Ok(("-", fc_exp!("abs", 1.))));
+
+        assert_eq!(
+            func_call("sig(1,2,|x| x^2)"),
+            Ok((
+                "",
+                fc_exp!(
+                    "sig",
+                    [1, 2],
+                    lambda!([var!("x")], node!(var!("x"), '^', 2))
+                )
+            ))
+        );
+        assert_eq!(
+            func_call("sig(1,2|x| x^2)"),
+            Ok((
+                "",
+                fc_exp!(
+                    "sig",
+                    [1, 2],
+                    lambda!([var!("x")], node!(var!("x"), '^', 2))
+                )
+            ))
+        );
     }
 
     #[test]

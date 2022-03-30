@@ -1,8 +1,11 @@
 mod func_call;
+mod scope;
+use func_call::resolve_func;
+use scope::Scope;
 
 use crate::errors::{Error, EvalError};
-use crate::expression::{Constant, Expression, FuncCall, Node, Operator};
-use func_call::resolve_func;
+use crate::eval::func_call::resolve_lambda_func;
+use crate::expression::{Constant, Expression, FuncCall, Node, Operator, Variable};
 
 pub(crate) struct Eval {}
 
@@ -12,16 +15,18 @@ impl Eval {
     }
 
     pub(crate) fn eval(&self, exp: &Expression) -> Result<f64, Error> {
-        eval_exp(exp).map_err(Error::Eval)
+        let mut scope = Scope::new();
+        eval_exp(exp, &mut scope).map_err(Error::Eval)
     }
 }
 
-fn eval_exp(exp: &Expression) -> Result<f64, EvalError> {
+fn eval_exp<'s>(exp: &'s Expression, scope: &mut Scope<'s>) -> Result<f64, EvalError> {
     match exp {
         Expression::Literal(lit) => Ok(*lit),
         Expression::Constant(cst) => eval_constant(cst),
-        Expression::FuncCall(fc) => eval_func_call(fc),
-        Expression::Ast(node) => eval_node(node.as_ref()),
+        Expression::Variable(var) => eval_variable(var, scope),
+        Expression::FuncCall(fc) => eval_func_call(fc, scope),
+        Expression::Ast(node) => eval_node(node.as_ref(), scope),
     }
 }
 
@@ -34,23 +39,51 @@ fn eval_constant(cst: &Constant) -> Result<f64, EvalError> {
     Ok(cst)
 }
 
+fn eval_variable(var: &Variable, scope: &Scope) -> Result<f64, EvalError> {
+    scope
+        .resolve(var)
+        .ok_or_else(|| EvalError::VariableNotFound {
+            ident: var.as_ref().to_owned(),
+        })
+}
+
 /// eval given function call.
 ///   * resolve identifier.
 ///   * eval each args.
 ///   * then call func implementation with args
-fn eval_func_call(fc: &FuncCall) -> Result<f64, EvalError> {
-    let f = resolve_func(fc.ident()).ok_or_else(|| EvalError::UndefinedFunction {
-        ident: fc.ident().to_owned(),
-    })?;
-    // Eval each arg.
-    let args = fc.args().map(eval_exp).collect::<Result<Vec<_>, _>>()?;
+fn eval_func_call<'s>(fc: &'s FuncCall, scope: &mut Scope<'s>) -> Result<f64, EvalError> {
+    match fc.lambda() {
+        Some(lambda) => {
+            let f =
+                resolve_lambda_func(fc.ident()).ok_or_else(|| EvalError::UndefinedFunction {
+                    ident: fc.ident().to_owned(),
+                })?;
 
-    f(args.as_slice())
+            let args = fc
+                .args()
+                .map(|arg| eval_exp(arg, scope))
+                .collect::<Result<Vec<_>, _>>()?;
+
+            f(args.as_slice(), lambda, scope)
+        }
+        None => {
+            let f = resolve_func(fc.ident()).ok_or_else(|| EvalError::UndefinedFunction {
+                ident: fc.ident().to_owned(),
+            })?;
+            // Eval each arg.
+            let args = fc
+                .args()
+                .map(|arg| eval_exp(arg, scope))
+                .collect::<Result<Vec<_>, _>>()?;
+
+            f(args.as_slice())
+        }
+    }
 }
 
-fn eval_node(node: &Node) -> Result<f64, EvalError> {
-    let left = eval_exp(&node.left)?;
-    let right = eval_exp(&node.right)?;
+fn eval_node<'s>(node: &'s Node, scope: &mut Scope<'s>) -> Result<f64, EvalError> {
+    let left = eval_exp(&node.left, scope)?;
+    let right = eval_exp(&node.right, scope)?;
 
     apply_operator(left, node.operator, right)
 }
@@ -74,7 +107,7 @@ fn apply_operator(left: f64, op: Operator, right: f64) -> Result<f64, EvalError>
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::macros::fc;
+    use crate::expression::macros::{fc, lambda, node, var};
 
     #[test]
     fn divided_by_zero() {
@@ -91,23 +124,63 @@ mod tests {
 
     #[test]
     fn test_eval_func_call() {
-        assert_eq!(eval_func_call(&fc!("sqrt", 100)), Ok(10.));
         assert_eq!(
-            eval_func_call(&fc!("sqrt", 10., 20.)),
+            eval_func_call(&fc!("sqrt", 100), &mut Scope::new()),
+            Ok(10.)
+        );
+        assert_eq!(
+            eval_func_call(&fc!("sqrt", 10., 20.), &mut Scope::new()),
             Err(EvalError::arg_count_does_not_match("sqrt", 1, 2))
         );
 
-        assert_eq!(eval_func_call(&fc!("pow", 2, 3)), Ok(8.));
+        assert_eq!(eval_func_call(&fc!("pow", 2, 3), &mut Scope::new()), Ok(8.));
         assert_eq!(
-            eval_func_call(&fc!("pow", 2)),
+            eval_func_call(&fc!("pow", 2), &mut Scope::new()),
             Err(EvalError::arg_count_does_not_match("pow", 2, 1))
         );
 
-        assert_eq!(eval_func_call(&fc!("abs", -3.)), Ok(3.));
-        assert_eq!(eval_func_call(&fc!("abs", 3.)), Ok(3.));
+        assert_eq!(eval_func_call(&fc!("abs", -3.), &mut Scope::new()), Ok(3.));
+        assert_eq!(eval_func_call(&fc!("abs", 3.), &mut Scope::new()), Ok(3.));
         assert_eq!(
-            eval_func_call(&fc!("abs", 2, 2)),
+            eval_func_call(&fc!("abs", 2, 2), &mut Scope::new()),
             Err(EvalError::arg_count_does_not_match("abs", 1, 2))
+        );
+    }
+
+    #[test]
+    fn test_eval_func_call_sig() {
+        assert_eq!(
+            eval_func_call(
+                &fc!(
+                    "sig",
+                    [1, 5],
+                    lambda!([var!("x")], node!(var!("x"), '^', 2))
+                ),
+                &mut Scope::new()
+            ),
+            Ok(55.)
+        );
+        assert_eq!(
+            eval_func_call(
+                &fc!(
+                    "sig",
+                    [5, 1],
+                    lambda!([var!("x")], node!(var!("x"), '^', 2))
+                ),
+                &mut Scope::new()
+            ),
+            Ok(55.)
+        );
+        assert_eq!(
+            eval_func_call(
+                &fc!(
+                    "sig",
+                    [1, 1],
+                    lambda!([var!("x")], node!(var!("x"), '^', 2))
+                ),
+                &mut Scope::new()
+            ),
+            Ok(1.)
         );
     }
 }
