@@ -11,9 +11,11 @@ It eval given expression and print result.
 
 ---
 # 📖 Table of Contents (Toc)
-[Installation](#installation)  
-[Usage](#usage)  
-[License](#license)  
+💻 [Installation](#-installation)  
+👩‍💻 [Usage](#-usage)  
+🦀 [Using Clc in Rust Codes](#-using-clc-in-rust)  
+🕸 [Access clc via GraphQL](#-access-clc-via-graphql)  
+🪪 [License](#-license)  
 ---
 
 ## 💻 Installation 
@@ -95,6 +97,44 @@ A lambda expression is written like `|x| { x^2 }`.
 | `pi`       | Archimedes’ constant (π) |
 | `e`        | Euler’s number (e)       |
 
+## 🦀 Using Clc in Rust
+
+Clc is also available in Rust codes with [`clc-engine`]
+
+```rust
+use clc_engine::Calculator;
+
+fn main() {
+    let clc = Calculator::new();
+    let eval = clc.calculate_line("sqrt(sqrt(16)) * (4 + 2)");
+
+    assert_eq!(eval, Ok(12.));
+}
+```
+
+## 🕸 Access clc via GraphQL
+
+[`clc-gql`]exposes clc with graphql api.  
+To run [`clc-gql`] with docker ,execute the following command.
+```shell
+docker run --rm --publish 9696:9696 ghcr.io/ymgyt/clc-gql:latest
+```
+
+then access 
+```shell
+curl \
+  -X POST \
+  -d '{"query": "{ eval(expression: \"100 - 1\") }"}' \
+  http://localhost:9696/graphql
+
+{"data":{"eval":99.0}}
+```
+
+playground can be accessed from `localhost:9696/graphsql/playground`.
+
 ## 🪪 License
 
 This project is available under the terms of either the [Apache 2.0 license](../LICENSE-APACHE) or the [MIT license](../LICENSE-MIT).
+
+[`clc-engine`]: https://github.com/ymgyt/clc/clc-engine
+[`clc-gql`]: https://github.com/ymgyt/clc/clc-gql
