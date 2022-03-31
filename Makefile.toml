@@ -2,7 +2,11 @@
 description = "Apply lint"
 command = "cargo"
 args = ["clippy", "--all-features", "--all-targets", "--", "--deny", "warnings"]
-dependencies = ["fmt-check", "sort-check", "engine-readme-check", "clc-readme-check", "outdated-check"]
+dependencies = [
+    "fmt-check", "sort-check",
+    "engine-readme-check", "clc-readme-check", "gql-readme-check",
+    "outdated-check",
+]
 
 [tasks.fmt-check]
 description = "Check format"
@@ -19,7 +23,11 @@ args = ["sort", "--workspace", "--check"]
 description = "Check to see if the dependencies are up-to-date"
 install_crate = { crate_name = "cargo-outdated"}
 command = "cargo"
-args = ["outdated", "--exit-code", "1"]
+args = [
+    "outdated", "--exit-code", "1",
+    # exclude axum because async-graphql-axum depends 0.4.x
+    "--ignore", "axum",
+]
 
 [tasks.cli-release-build]
 env = { "CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS" = ["clc-cli"]}
@@ -77,6 +85,21 @@ script = [
     "diff README.md <(cargo readme --project-root clc-cli --template .project/README.tpl)"
 ]
 
+[tasks.generate-gql-readme]
+description = "Generate clc-gql README"
+install_crate = { crate_name = "cargo-readme" }
+script_runner = "bash"
+script = [
+    "cargo readme --project-root clc-gql --template .project/README.tpl > clc-gql/README.md",
+]
+
+[tasks.gql-readme-check]
+description = "Check clc-gql README diff"
+script_runner = "bash"
+script = [
+    "diff clc-gql/README.md <(cargo readme --project-root clc-gql --template .project/README.tpl)",
+]
+
 [tasks.publish-engine]
 description = "Publish clc-engine package"
 command = "cargo"
@@ -91,6 +114,20 @@ args = ["install", "cargo-nextest", "cargo-criterion", "cargo-sort", "cargo-read
 description = "Build clc docker image"
 command = "docker"
 args = ["image", "build", "--file", "clc-cli/.project/container/Dockerfile", "--tag", "clc:latest", "."]
+
+[tasks.build-gql-image]
+description = "Build clc-gql docker image"
+command = "docker"
+args = ["image", "build", "--file", "clc-gql/.project/container/Dockerfile", "--tag", "ghcr.io/ymgyt/clc-gql:latest", "."]
+
+[tasks.push-gql-image]
+description = "Push clc-gql docker image to container registry"
+command = "docker"
+args = ["push", "ghcr.io/ymgyt/clc-gql:latest"]
+
+[tasks.gql-docker-flow]
+dependencies = ["build-gql-image", "push-gql-image"]
+
 
 [config]
 # https://github.com/sagiegurari/cargo-make#disabling-workspace-support
