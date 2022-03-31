@@ -1,0 +1,63 @@
+[package]
+name = "clc-gql"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Calculator graphql interface app"
+repository = "https://github.com/ymgyt/calculator"
+readme = "README.md"
+keywords = ["calculator"]
+exclude = ["/.project", "!/.project/scripts/version.rs"]
+default-run = "clcgql"
+
+[[bin]]
+name = "clcgql"
+path = "src/main.rs"
+
+[[bin]]
+# Used in ci for get current version.
+name = "version"
+path = ".project/scripts/version.rs"
+
+[dependencies.async-graphql]
+version = "3.0.37"
+
+[dependencies.async-graphql-axum]
+version = "3.0.37"
+
+[dependencies.axum]
+version = "0.4.8"
+features = ["headers", "http1", "http2", "tower-log"]
+
+[dependencies.clap]
+version = "3.1.6"
+features = ["derive", "env", "wrap_help"]
+
+[dependencies.clc-engine]
+path = "../clc-engine"
+version = "0.1.4"
+
+[dependencies.tokio]
+version = "1.17.0"
+features = ["signal", "rt", "rt-multi-thread", "macros"]
+
+[dependencies.tower]
+version = "0.4.12"
+
+[dependencies.tower-http]
+version = "0.2.5"
+features = ["trace"]
+
+[dependencies.tracing]
+version = "0.1.32"
+
+[dependencies.tracing-subscriber]
+version = "0.3.1"
+features = ["env-filter", "local-time"]
+
+[dev-dependencies]
+reqwest = "0.11.10"
+
+[dev-dependencies.tokio]
+version = "1.17.0"
+features = ["signal", "rt", "rt-multi-thread", "macros", "test-util", "sync"]
