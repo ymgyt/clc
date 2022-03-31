@@ -94,7 +94,6 @@ description = "Check clc-gql README diff"
 script_runner = "bash"
 script = [
     "diff clc-gql/README.md <(cargo readme --project-root clc-gql --template .project/README.tpl)",
-    "diff README.md <(cargo readme --project-root clc-gql --template .project/README.tpl)"
 ]
 
 [tasks.publish-engine]

@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/license-Apache-green.svg)](LICENSE-APACHE)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE-MIT)
 
-
+Clcgql is a GraphQL server for clc.
 
 ## 🪪 License
 
