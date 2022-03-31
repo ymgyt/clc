@@ -23,7 +23,11 @@ args = ["sort", "--workspace", "--check"]
 description = "Check to see if the dependencies are up-to-date"
 install_crate = { crate_name = "cargo-outdated"}
 command = "cargo"
-args = ["outdated", "--exit-code", "1"]
+args = [
+    "outdated", "--exit-code", "1",
+    # exclude axum because async-graphql-axum depends 0.4.x
+    "--ignore", "axum",
+]
 
 [tasks.cli-release-build]
 env = { "CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS" = ["clc-cli"]}
