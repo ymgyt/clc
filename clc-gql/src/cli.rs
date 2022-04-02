@@ -27,7 +27,7 @@ impl ClcGqlApp {
 
     /// Entry point of execution.
     pub async fn exec(self, shutdown: impl Future<Output = SignalEvent>) -> io::Result<()> {
-        let dep = Dependency::new();
+        let dep = Dependency::new().await;
         self.listen_and_serve(dep, shutdown).await
     }
 

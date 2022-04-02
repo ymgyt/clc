@@ -1,0 +1,4 @@
+[tasks.up]
+description = "Run docker compose up"
+command = "docker"
+args = ["compose", "--file", ".project/local/docker-compose.yaml", "up"]

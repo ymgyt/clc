@@ -11,6 +11,7 @@ pub fn build() -> SchemaBuilder<QueryRoot, EmptyMutation, EmptySubscription> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::cache::CacheLayer;
     use async_graphql::{indexmap::indexmap, Name, Number, Value};
     use clc_engine::Calculator;
 
@@ -35,6 +36,8 @@ mod tests {
     }
 
     fn schema() -> AppSchema {
-        build().data(Calculator::default()).finish()
+        build()
+            .data(CacheLayer::no_cache(Calculator::default()))
+            .finish()
     }
 }
