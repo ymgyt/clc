@@ -55,7 +55,7 @@ jobs:
       - uses: ./.github/actions/cache-cargo
       - name: Version
         run: |
-          VERSION=$(cargo run --bin gql-version)
+          VERSION=$(cargo run --bin clc-version)
           echo "::set-output name=version::${VERSION}"
         id: version
       - name: Login to ghcr.io
@@ -70,8 +70,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./
-          file: ./clc-gql/.project/container/Dockerfile
+          file: ./clc-cli/.project/container/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.actor }}/clc-gql:latest
-            ghcr.io/${{ github.actor }}/clc-gql:${{ steps.version.outputs.version }}
+            ghcr.io/${{ github.actor }}/clc-cli:latest
+            ghcr.io/${{ github.actor }}/clc-cli:${{ steps.version.outputs.version }}

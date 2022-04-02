@@ -17,7 +17,7 @@ path = "src/main.rs"
 
 [[bin]]
 # Used in ci for get current version.
-name = "version"
+name = "clc-version"
 path = ".project/scripts/version.rs"
 
 [dependencies]
