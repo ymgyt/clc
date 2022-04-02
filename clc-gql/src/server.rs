@@ -44,14 +44,17 @@ impl Server {
                 tower::ServiceBuilder::new()
                     .layer(TraceLayer::new_for_http().on_request(
                         |req: &axum::http::Request<_>, _: &tracing::Span| {
-                            tracing::info!(?req);
+                            if req.uri().path() == "/health" {
+                                tracing::debug!(?req)
+                            } else {
+                                tracing::info!(?req, version = "v0.0.3");
+                            }
                         },
                     ))
                     .layer(axum::extract::Extension(schema)),
             );
 
-        axum::Server::from_tcp(listener)
-            .unwrap()
+        axum::Server::from_tcp(listener)?
             .serve(app.into_make_service())
             .with_graceful_shutdown(shutdown)
             .await?;
@@ -70,7 +73,7 @@ mod tests {
     async fn server() {
         let server = Server::new(ServerConfig::default());
         let listener = std::net::TcpListener::bind(("127.0.0.1", 9696)).unwrap();
-        let dep = Dependency::default();
+        let dep = Dependency::new().await;
         let (tx, rx) = tokio::sync::oneshot::channel();
         let shutdown = async move {
             rx.await.unwrap();

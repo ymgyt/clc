@@ -1,7 +1,6 @@
 use std::fmt::{self, Formatter};
 
 use async_graphql::{Error, ErrorExtensions};
-
 use clc_engine::{Error as ClcError, EvalError};
 
 #[derive(Debug, PartialEq)]

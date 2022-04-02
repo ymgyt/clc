@@ -16,8 +16,12 @@ path = "src/main.rs"
 
 [[bin]]
 # Used in ci for get current version.
-name = "version"
+name = "gql-version"
 path = ".project/scripts/version.rs"
+
+[features]
+default = []
+cache = ["redis"]
 
 [dependencies.async-graphql]
 version = "3.0.37"
@@ -36,6 +40,14 @@ features = ["derive", "env", "wrap_help"]
 [dependencies.clc-engine]
 path = "../clc-engine"
 version = "0.1.4"
+
+[dependencies.redis]
+version = "0.21.5"
+features = ["tokio-comp"]
+optional = true
+
+[dependencies.thiserror]
+version = "1.0.30"
 
 [dependencies.tokio]
 version = "1.17.0"

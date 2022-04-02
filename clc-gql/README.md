@@ -8,6 +8,19 @@
 
 Clcgql is a GraphQL server for clc.
 
+## Features
+
+* `cache`
+  * If enabled, cache the result to the redis specified by `CLCGQL_REDIS_ENDPOINT`
+
+## Environment variables
+
+| Key                     | Description             | Example                       | 
+|-------------------------|-------------------------|-------------------------------|
+| `CLCGQL_LOG`            | Rust logging directive. | `info`                        | 
+| `CLCGQL_LOG_COLOR`      | Control logging color   | `false`                       | 
+| `CLCGQL_REDIS_ENDPOINT` | Redis connection info`  | `redis://cache.ymgyt.io:6376` |
+
 ## 🪪 License
 
 This project is available under the terms of either the [Apache 2.0 license](../LICENSE-APACHE) or the [MIT license](../LICENSE-MIT).
