@@ -30,7 +30,7 @@ version = "3.0.38"
 version = "3.0.37"
 
 [dependencies.axum]
-version = "0.4"
+version = "0.5"
 features = ["headers", "http1", "http2", "tower-log"]
 
 [dependencies.clap]
