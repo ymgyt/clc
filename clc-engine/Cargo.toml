@@ -10,7 +10,7 @@ exclude = ["/.project"]
 
 [dependencies]
 nom = "7.1.1"
-num-traits = "0.2.14"
+num-traits = "0.2.15"
 
 [dev-dependencies]
 criterion = "0.3.5"
