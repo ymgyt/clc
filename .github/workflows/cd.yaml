@@ -59,7 +59,7 @@ jobs:
           echo "::set-output name=version::${VERSION}"
         id: version
       - name: Login to ghcr.io
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
