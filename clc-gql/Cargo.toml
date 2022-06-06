@@ -50,7 +50,7 @@ optional = true
 version = "1.0.31"
 
 [dependencies.tokio]
-version = "1.18.2"
+version = "1.19.1"
 features = ["signal", "rt", "rt-multi-thread", "macros"]
 
 [dependencies.tower]
@@ -71,5 +71,5 @@ features = ["env-filter", "local-time"]
 reqwest = "0.11.10"
 
 [dev-dependencies.tokio]
-version = "1.18.2"
+version = "1.19.1"
 features = ["signal", "rt", "rt-multi-thread", "macros", "test-util", "sync"]
