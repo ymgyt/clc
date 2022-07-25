@@ -34,7 +34,7 @@ version = "0.4"
 features = ["headers", "http1", "http2", "tower-log"]
 
 [dependencies.clap]
-version = "3.1.17"
+version = "3.2.14"
 features = ["derive", "env", "wrap_help"]
 
 [dependencies.clc-engine]
@@ -68,7 +68,7 @@ version = "0.3.14"
 features = ["env-filter", "local-time"]
 
 [dev-dependencies]
-reqwest = "0.11.10"
+reqwest = "0.11.11"
 
 [dev-dependencies.tokio]
 version = "1.20.0"
