@@ -24,13 +24,13 @@ default = []
 cache = ["redis"]
 
 [dependencies.async-graphql]
-version = "3.0.38"
+version = "4.0"
 
 [dependencies.async-graphql-axum]
-version = "3.0.37"
+version = "4.0"
 
 [dependencies.axum]
-version = "0.4"
+version = "0.5"
 features = ["headers", "http1", "http2", "tower-log"]
 
 [dependencies.clap]
