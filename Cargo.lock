@@ -1207,9 +1207,9 @@ dependencies = [
 
 [[package]]
 name = "nu-ansi-term"
-version = "0.45.1"
+version = "0.46.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c7bca0d33a384280d1563b97f49cb95303df9fa22588739a04b7d8015c1ccd50"
+checksum = "77a8165726e8236064dbb45459242600304b42a5ea24ee2948e18e023bf7ba84"
 dependencies = [
  "overload",
  "winapi",
@@ -1596,18 +1596,20 @@ dependencies = [
 
 [[package]]
 name = "reedline"
-version = "0.5.0"
+version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d96c36021d0668f3b4f8c054fce3a9b9b0aa83fc60aa6c59df0e2165f9980763"
+checksum = "d064ec92a21deb048c440b6461ccf0d0babdb5f2160ea9dfac451bc7b4b556e2"
 dependencies = [
  "chrono",
  "crossterm",
  "fd-lock",
+ "itertools",
  "nu-ansi-term",
  "serde",
  "strip-ansi-escapes",
  "strum",
  "strum_macros",
+ "thiserror",
  "unicode-segmentation",
  "unicode-width",
 ]
