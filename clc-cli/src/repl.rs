@@ -5,7 +5,7 @@ use crate::prompt::ClcPrompt;
 
 pub fn repl(calculator: &Calculator) -> std::io::Result<()> {
     let prompt = ClcPrompt::new();
-    let mut line_editor = Reedline::create()?.with_edit_mode(Box::new(reedline::Vi::default()));
+    let mut line_editor = Reedline::create().with_edit_mode(Box::new(reedline::Vi::default()));
 
     print_initial_help();
 
@@ -23,9 +23,6 @@ pub fn repl(calculator: &Calculator) -> std::io::Result<()> {
             }
             Signal::CtrlD | Signal::CtrlC => {
                 break;
-            }
-            Signal::CtrlL => {
-                line_editor.clear_screen()?;
             }
         }
     }
