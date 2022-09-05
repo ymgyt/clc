@@ -21,7 +21,7 @@ name = "clc-version"
 path = ".project/scripts/version.rs"
 
 [dependencies]
-clap = { version = "3.2.17", features = ["derive", "wrap_help"] }
+clap = { version = "3.2.20", features = ["derive", "wrap_help"] }
 clc-engine = { path = "../clc-engine", version = "0.1.4" }
 reedline = "0.10.0"
 
