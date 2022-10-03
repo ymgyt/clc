@@ -47,7 +47,7 @@ features = ["tokio-comp"]
 optional = true
 
 [dependencies.thiserror]
-version = "1.0.32"
+version = "1.0.37"
 
 [dependencies.tokio]
 version = "1.20.0"
