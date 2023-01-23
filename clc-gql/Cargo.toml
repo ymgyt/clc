@@ -61,7 +61,7 @@ version = "0.3.3"
 features = ["trace"]
 
 [dependencies.tracing]
-version = "0.1.36"
+version = "0.1.37"
 
 [dependencies.tracing-subscriber]
 version = "0.3.14"
