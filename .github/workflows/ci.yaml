@@ -26,15 +26,15 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/install-tools
-      - uses: baptiste0928/cargo-install@v1
+      - uses: baptiste0928/cargo-install@v2
         with:
           crate: cargo-readme
           version: latest
-      - uses: baptiste0928/cargo-install@v1
+      - uses: baptiste0928/cargo-install@v2
         with:
           crate: cargo-sort
           version: latest
-      - uses: baptiste0928/cargo-install@v1
+      - uses: baptiste0928/cargo-install@v2
         with:
           crate: cargo-outdated
           version: latest
