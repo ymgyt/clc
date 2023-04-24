@@ -64,7 +64,7 @@ features = ["trace"]
 version = "0.1.37"
 
 [dependencies.tracing-subscriber]
-version = "0.3.16"
+version = "0.3.17"
 features = ["env-filter", "local-time"]
 
 [dev-dependencies]
