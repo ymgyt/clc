@@ -24,7 +24,7 @@ default = []
 cache = ["redis"]
 
 [dependencies.async-graphql]
-version = "4.0"
+version = "5.0"
 
 [dependencies.async-graphql-axum]
 version = "4.0"
