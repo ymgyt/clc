@@ -34,7 +34,7 @@ version = "0.5"
 features = ["headers", "http1", "http2", "tower-log"]
 
 [dependencies.clap]
-version = "4.1.11"
+version = "4.1.14"
 features = ["derive", "env", "wrap_help"]
 
 [dependencies.clc-engine]
