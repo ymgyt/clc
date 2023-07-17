@@ -26,4 +26,4 @@ clc-engine = { path = "../clc-engine", version = "0.1.4" }
 reedline = "0.19.1"
 
 [dev-dependencies]
-assert_cmd = "2.0.11"
+assert_cmd = "2.0.12"
