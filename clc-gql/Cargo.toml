@@ -42,7 +42,7 @@ path = "../clc-engine"
 version = "0.1.4"
 
 [dependencies.redis]
-version = "0.23.0"
+version = "0.23.1"
 features = ["tokio-comp"]
 optional = true
 
