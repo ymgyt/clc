@@ -13,7 +13,7 @@ jobs:
     name: Build cache
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - name: Cargo build
         run: cargo build
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-cache
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/install-tools
       - uses: baptiste0928/cargo-install@v2
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-cache
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/install-tools
       - uses: taiki-e/install-action@v2
